@@ -1,0 +1,75 @@
+.up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  border-bottom: 5px solid black;
+}
+
+.down {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+
+  border-top: 20px solid #f00;
+}
+
+.right {
+  width: 0;
+  height: 0;
+  border-top: 60px solid transparent;
+  border-bottom: 60px solid transparent;
+
+  border-left: 60px solid green;
+}
+
+.left {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+
+  border-right: 10px solid blue;
+}
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  content: "";
+}
+
+.triangleTopLeft {
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent #f00 transparent;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.triangleTopRight {
+  border-width: 0 20px 20px 0;
+  border-color: transparent #00f transparent transparent;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%) rotate(45deg);
+}
+
+.triangleBottomLeft {
+  border-width: 20px 0 0 20px;
+  border-color: #ff0 transparent transparent transparent;
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%) rotate(45deg);
+}
+
+.triangleBottomRight {
+  border-width: 20px 20px 0 0;
+  border-color: transparent transparent #0f0 transparent;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%) rotate(45deg);
+}

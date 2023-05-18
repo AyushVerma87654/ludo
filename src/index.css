@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  content: "";
+}
+
+.triangle-top-left {
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent #f00 transparent;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.triangle-top-right {
+  border-width: 0 20px 20px 0;
+  border-color: transparent #00f transparent transparent;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%) rotate(45deg);
+}
+
+.triangle-bottom-left {
+  border-width: 20px 0 0 20px;
+  border-color: #ff0 transparent transparent transparent;
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%) rotate(45deg);
+}
+
+.triangle-bottom-right {
+  border-width: 20px 20px 0 0;
+  border-color: transparent transparent #0f0 transparent;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%) rotate(45deg);
+}
