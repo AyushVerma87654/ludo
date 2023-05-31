@@ -1,19 +1,81 @@
-import React, { FC, useContext } from "react";
-// import { data } from "./data";
+import React, { FC } from "react";
 import GotiDisplay from "./GotiDisplay";
-import { StateContext } from "./App";
+import { gotiUnlock } from "./utility/GotiUnlock";
+import { gotiMovement } from "./utility/GotiMovement";
+import { handleClick } from "./utility/OnClickFunction";
+import { ConnectedProps, connect } from "react-redux";
+import { AppState } from "../redux/reducer";
+import {
+  chanceOrderSelector,
+  chanceSelector,
+  positionDataSelector,
+  diceNumberSelector,
+  playedSelector,
+  canPlaySelector,
+  gotiCutTokenSelector,
+} from "../redux/selectors";
+import {
+  canPlayAction,
+  canNotPlayAction,
+  hasNotPlayedAction,
+  hasPlayedAction,
+  positionDataAction,
+} from "../redux/action/action";
 
-interface RoundButtonProps {
+interface RoundButtonProps extends ReduxProps {
   bgColor: string;
   buttonId: string;
 }
 
-const RoundButton: FC<RoundButtonProps> = ({ bgColor, buttonId }) => {
-  const { mainState, setMainState } = useContext(StateContext);
-  const { chance, chanceOrder, position } = mainState;
+const RoundButton: FC<RoundButtonProps> = ({
+  bgColor,
+  buttonId,
+  positionData,
+  canPlay,
+  played,
+  chance,
+  chanceOrder,
+  diceNumber,
+  gotiCutToken,
+  positionDataChange,
+  hasPlayedChange,
+  canPlayChange,
+  canNotPlayChange,
+  hasNotPlayedChange,
+}) => {
+  const mainState = {
+    positionData,
+    canPlay,
+    played,
+    chance,
+    chanceOrder,
+    diceNumber,
+    gotiCutToken,
+  };
   let gotiBgColor = "";
-  const handleClick = (buttonId: string) => console.log("buttonId", buttonId);
-  const stone: string = position[buttonId].item?.charAt(0);
+  const setMainState = {
+    positionDataChange,
+    hasPlayedChange,
+    canPlayChange,
+    canNotPlayChange,
+    hasNotPlayedChange,
+  };
+  // const handleClick = (buttonId: string) => {
+  //   console.log("buttonId", buttonId);
+  //   const data = gotiMovement(
+  //     buttonId,
+  //     chanceOrder[chance],
+  //     positionData,
+  //     diceNumber
+  //   );
+  //   const newState = {
+  //     ...mainState,
+  //     positionData: data.newPositionData,
+  //     played: data.played,
+  //   };
+  //   setMainState(newState);
+  // };
+  const stone: string = positionData[buttonId].item[0]?.charAt(0);
   // console.log("stone", stone);
   if (stone == "Y") {
     gotiBgColor = "bg-yellow-500";
@@ -25,21 +87,100 @@ const RoundButton: FC<RoundButtonProps> = ({ bgColor, buttonId }) => {
     gotiBgColor = "bg-red-500";
   }
 
+  // console.log("positionData", positionData);
+
+  const itemFound = Object.values(positionData).find(
+    (positionData) => positionData.position === buttonId && !!positionData.item
+  );
+  // itemFound && console.log(buttonId, itemFound);
+  // console.log("position", position);
+  const item = itemFound ? itemFound.item : undefined;
+  // itemFound && console.log("itemFound.item", itemFound.item);
+
+  const eachFunction = (item: { position: string; item: string }) => {
+    if (item.item !== "") {
+      console.log("not empty", item);
+    }
+  };
+  // console.log("position", position);
+
+  // console.log("chance", chanceOrder[chance]);
+
+  // console.log("position", position);
+
+  // (item) => {
+  //   if (item.item !== "") {
+  //     console.log("not empty", item);
+  //   }
+  // };
+
+  // console.log(
+  //   " Object.values(position).forEach(eachFunction);",
+  //   Object.values(position).forEach((item) => {
+  //     if (item.item !== "") {
+  //       console.log("not empty", item);
+  //     }
+  //   })
+  // );
+
   // if (bgColor == "bg-red-500") {
   // }
   // if (data[buttonId].item != "") {
   //   // console.log("data[JSON.stringify(buttonId)].item", data[buttonId].item);
   // }
-  // // console.log("data[JSON.stringify(buttonId)].item", data[buttonId]);
+  // console.log("data[JSON.stringify(buttonId)].item", data[buttonId]);
   // // if()
   return (
     <div
       className={`flex items-center justify-center border border-black rounded-full w-10 h-10 ${bgColor}`}
-      onClick={() => handleClick(buttonId)}
+      onClick={() => {
+        handleClick(buttonId, mainState, setMainState);
+      }}
     >
-      {stone && <GotiDisplay bgColor={gotiBgColor} />}
+      <div className="absolute">
+        {item !== undefined ? (
+          <>
+            <GotiDisplay item={itemFound} />
+          </>
+        ) : (
+          <></>
+        )}
+        {/* {Object.values(position).forEach((item) => {
+          if (item.item !== "") {
+            return <GotiDisplay item={item} />;
+          }
+        })} */}
+
+        {/* {Object.values(position).filter((item) => {
+          if (item.item !== "") {
+            return <GotiDisplay item={item} />;
+          }
+        })} */}
+      </div>
     </div>
   );
 };
 
-export default RoundButton;
+const mapStateToProps = (state: AppState) => ({
+  positionData: positionDataSelector(state),
+  chance: chanceSelector(state),
+  chanceOrder: chanceOrderSelector(state),
+  diceNumber: diceNumberSelector(state),
+  played: playedSelector(state),
+  canPlay: canPlaySelector(state),
+  gotiCutToken: gotiCutTokenSelector(state),
+});
+
+const mapDispatchToProps = {
+  positionDataChange: positionDataAction,
+  canNotPlayChange: canNotPlayAction,
+  hasNotPlayedChange: hasNotPlayedAction,
+  hasPlayedChange: hasPlayedAction,
+  canPlayChange: canPlayAction,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(RoundButton);

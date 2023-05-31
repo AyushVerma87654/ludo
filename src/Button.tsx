@@ -3,35 +3,82 @@ import { GiMoebiusStar } from "react-icons/gi";
 import { BsFillStarFill } from "react-icons/bs";
 import { data } from "./data";
 import GotiDisplay from "./GotiDisplay";
-import { StateContext } from "./App";
+import withUser from "./withUser";
+import { gotiMovement } from "./utility/GotiMovement";
+import { handleClick } from "./utility/OnClickFunction";
+import {
+  chanceOrderSelector,
+  chanceSelector,
+  positionDataSelector,
+  diceNumberSelector,
+  playedSelector,
+  canPlaySelector,
+  gotiCutTokenSelector,
+} from "../redux/selectors";
+import { AppState } from "../redux/reducer";
+import { ConnectedProps, connect } from "react-redux";
+import {
+  canPlayAction,
+  canNotPlayAction,
+  hasNotPlayedAction,
+  hasPlayedAction,
+  positionDataAction,
+  gotiCutTokenAction,
+} from "../redux/action/action";
 
-interface ButtonProps {
+interface ButtonProps extends ReduxProps {
   index: number;
   middle: number;
   name: string;
   direction: String;
 }
 
-const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
-  const { mainState, setMainState } = useContext(StateContext);
-  const { chance, chanceOrder, position } = mainState;
-  // const stone: string = data[buttonId].item?.charAt(0);
-  // // console.log("stone", stone);
-  // if (stone == "Y") {
-  //   gotiBgColor = "bg-yellow-500";
-  // } else if (stone == "B") {
-  //   gotiBgColor = "bg-blue-500";
-  // } else if (stone == "G") {
-  //   gotiBgColor = "bg-green-500";
-  // } else if (stone == "R") {
-  //   gotiBgColor = "bg-red-500";
-  // }
+const Button: FC<ButtonProps> = ({
+  index,
+  name,
+  middle,
+  direction,
+  positionData,
+  canPlay,
+  played,
+  chance,
+  chanceOrder,
+  diceNumber,
+  gotiCutToken,
+  positionDataChange,
+  hasPlayedChange,
+  canPlayChange,
+  canNotPlayChange,
+  hasNotPlayedChange,
+  gotiCutTokenChange,
+}) => {
+  // const { chance, chanceOrder, positionData, diceNumber, played, canPlay } =
+  //   mainState;
+  // gotiMovement(chanceOrder[chance], position, diceNumber);
+  const mainState = {
+    positionData,
+    canPlay,
+    played,
+    chance,
+    chanceOrder,
+    diceNumber,
+    gotiCutToken,
+  };
+  const setMainState = {
+    positionDataChange,
+    hasPlayedChange,
+    canPlayChange,
+    canNotPlayChange,
+    hasNotPlayedChange,
+    gotiCutTokenChange,
+  };
+
+  // console.log("diceNumber", diceNumber);
   let gotiBgColor = "";
   let i: number;
   for (let i = 0; i < 52; i++) {
-    const str = position[JSON.stringify(i)].item;
+    const str = positionData[JSON.stringify(i)].item[0];
     if (str !== "") {
-      console.log("position[JSON.stringify(i)]", position[JSON.stringify(i)]);
       const color: string = str?.charAt(0);
       if (color == "Y") {
         gotiBgColor = "bg-yellow-500";
@@ -45,12 +92,24 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
     }
   }
 
-  // const [position, setPosition] = React.useState(data);
-  // console.log("position", position);
   let bgColor = "";
-  const handleClick = (id: string) => console.log("id", id);
+  // const handleClick = (id: string) => {
+  //   console.log("id", id);
+  //   const data = gotiMovement(
+  //     JSON.stringify(buttonId),
+  //     chanceOrder[chance],
+  //     positionData,
+  //     diceNumber
+  //   );
+  //   const newState = {
+  //     ...mainState,
+  //     positionData: data.newPositionData,
+  //     played: data.played,
+  //   };
+  //   setMainState(newState);
+  // };
   let borderHorizontal = "border-r-transparent ";
-  let buttonId = 0;
+  let buttonId: string | number = 0;
   let star1 = { red: false, blue: false, green: false, yellow: false };
   let star2 = { red: false, blue: false, green: false, yellow: false };
   let bgHorizontal = "";
@@ -64,7 +123,7 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
       } else if (middle == 1 && index == 0) {
         buttonId = 11;
       } else if (middle == 1 && index !== 0) {
-        str = "R" + index;
+        buttonId = "CR" + index;
       } else if (middle == 0) {
         buttonId = 12 + index;
       }
@@ -74,7 +133,7 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
       } else if (middle == 1 && index == 5) {
         buttonId = 37;
       } else if (middle == 1 && index !== 5) {
-        str = "Y" + (5 - index);
+        buttonId = "CY" + (5 - index);
       } else if (middle == 0) {
         buttonId = 31 + index;
       }
@@ -116,7 +175,7 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
       } else if (middle == 1 && index == 0) {
         buttonId = 24;
       } else if (middle == 1 && index !== 0) {
-        str = "G" + index;
+        buttonId = "CG" + index;
       } else if (middle == 2) {
         buttonId = 25 + index;
       }
@@ -130,7 +189,7 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
       } else if (middle == 0 && index !== 5) {
         buttonId = 4 - index;
       } else if (middle == 1 && index !== 5) {
-        str = "B" + (5 - index);
+        buttonId = "CB" + (5 - index);
       }
     }
     if (index == 5) {
@@ -164,19 +223,19 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
     }
     borderHorizontal = "";
   }
-  // console.log("str", str);
-  // if (data[JSON.stringify(buttonId)].item != "") {
-  //   console.log(
-  //     "data[JSON.stringify(buttonId)].item",
-  //     data[JSON.stringify(buttonId)].item
-  //   );
-  // }
-  // console.log("data.buttonId", data[JSON.stringify(buttonId)]);
+  const itemFound = Object.values(positionData).find(
+    (positionData) =>
+      positionData.position === buttonId.toString() && !!positionData.item[0]
+  );
+  const item = itemFound ? itemFound : undefined;
+
   return (
     <div
       className={`flex items-center justify-center border border-black w-10 h-10 ${borderHorizontal} ${borderVertical} ${bgHorizontal}  ${bgVertical}`}
       id={JSON.stringify(buttonId)}
-      onClick={() => handleClick(str != "" ? str : JSON.stringify(buttonId))}
+      onClick={() => {
+        handleClick(JSON.stringify(buttonId), mainState, setMainState);
+      }}
     >
       {(star1.red || star1.yellow || star1.green || star1.blue) && (
         <GiMoebiusStar className="rounded-full flex items-center justify-center h-full w-full text-black" />
@@ -184,38 +243,42 @@ const Button: FC<ButtonProps> = ({ index, name, middle, direction }) => {
       {(star2.red || star2.yellow || star2.green || star2.blue) && (
         <BsFillStarFill className="rounded-full flex items-center justify-center h-full w-full text-black" />
       )}
-      <div className="absolute mr-6 mb-6">
-        {Object.values(position).map((item) => {
-          console.log("item", item.item);
-          return (
-            <div>
-              {item.item ? (
-                <>
-                  <GotiDisplay bgColor={gotiBgColor} item={item} />
-                </>
-              ) : (
-                <div>{console.log("dcbjsbkdv b skjdbv kjds") || ""}</div>
-              )}
-            </div>
-          );
-        })}
+      <div className="absolute flex items-center justify-center">
+        {item !== undefined ? (
+          <>
+            <GotiDisplay item={itemFound} />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 };
 
-export default Button;
+const mapStateToProps = (state: AppState) => ({
+  positionData: positionDataSelector(state),
+  chance: chanceSelector(state),
+  chanceOrder: chanceOrderSelector(state),
+  diceNumber: diceNumberSelector(state),
+  played: playedSelector(state),
+  canPlay: canPlaySelector(state),
+  gotiCutToken: gotiCutTokenSelector(state),
+});
 
-{
-  /* <div className={`${Style.triangle} ${Style.triangleTopLeft}`}></div>
-          <div className={`${Style.triangle} ${Style.triangleTopRight}`}></div>
-          <div className={`${Style.triangle} ${Style.triangleBottomLeft}`}></div>
-          <div className={`${Style.triangle} ${Style.triangleBottomRight}`}></div> */
-}
-{
-  /* <div className="absolute flex items-center justify-center border border-white bg-white rounded-full w-6 h-6">
-        <div className="flex items-center justify-center border border-white bg-gray-300 rounded-full w-5 h-5">
-          <div className="border border-black bg-black rounded-full w-1.5 h-1.5"></div>
-        </div>
-      </div> */
-}
+const mapDispatchToProps = {
+  positionDataChange: positionDataAction,
+  canNotPlayChange: canNotPlayAction,
+  hasNotPlayedChange: hasNotPlayedAction,
+  hasPlayedChange: hasPlayedAction,
+  canPlayChange: canPlayAction,
+  gotiCutTokenChange: gotiCutTokenAction,
+};
+
+export type setMainStateType = typeof mapDispatchToProps;
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(Button);

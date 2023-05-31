@@ -1,12 +1,5 @@
-import { dataType } from "../data";
+import { StateActionType } from "../../redux/action/constants";
 
-export type mainStateType = {
-  chance: number;
-  chanceOrder: { [a: number]: string };
-  position: dataType;
-};
-
-export type ContextType = {
-  mainState: mainStateType;
-  setMainState: (a: mainStateType) => void;
+export type gotiCutTokenType = () => {
+  type: StateActionType;
 };

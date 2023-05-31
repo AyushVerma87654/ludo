@@ -1,38 +1,49 @@
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC } from "react";
 import Repeat from "./Repeat";
 import { hor, ver } from "./constants";
 import HomeBase from "./HomeBase";
-import Center from "./Center";
 import DummyCenter from "./DummyCenter";
-import { numGen } from "./utility/NumberGeneration";
 import DiceRolling from "./DiceRolling";
-import { StateContext } from "./App";
-import { gotiUnlock } from "./utility/GotiUnlock";
+import { ConnectedProps, connect } from "react-redux";
+// import { mainState } from "../redux/selectors";
+import { AppState } from "../redux/reducer";
 
-interface InterfaceProps {}
+interface InterfaceProps extends ReduxProps {}
 
-const Interface: FC<InterfaceProps> = () => {
-  const num = numGen();
-  const [number, setNumber] = React.useState(3);
-  const [token, setToken] = React.useState(false);
-  useEffect(() => {
-    if (token) {
-      setNumber(num);
-      setToken(false);
-    }
-  }, [token]);
-  const handleClick = () => console.log(6);
-  const handleButtonClick = () => setToken(true);
+const Interface: FC<InterfaceProps> = ({}) => {
+  // const [token, setToken] = React.useState(false);
+  // useEffect(() => {
+  //   if (token) {
+  //     setNumber(num);
+  //     setToken(false);
+  //   }
+  // }, [token]);
+  const handleClick = () => console.log("win");
 
-  const { mainState, setMainState } = useContext(StateContext);
-  const { chance, chanceOrder, position } = mainState;
-  React.useEffect(() => {
-    if (number == 6) {
-      const d = gotiUnlock(chanceOrder[chance], position);
-      const newState = { ...mainState, position: d };
-      setMainState(newState);
-    }
-  }, [number]);
+  // const { played, canPlay, diceNumber } = mainState;
+  // console.log("canPlay", canPlay);
+  // console.log("played", played);
+  // console.log("diceNumber", diceNumber);
+  // console.log("diceNumber", mainState);
+
+  // const gotiMovement = (token: boolean) => {
+  //   if (token == true) {
+  //     const newState = {
+  //       ...mainState,
+  //       gotiMovement: gotiUnlock,
+  //     };
+  //     setMainState(newState);
+  //   }
+  // };
+  // React.useEffect(() => {
+  //   Object.values(position).map((item) => {
+  //     if (number == 6) {
+  //       const d = gotiUnlock(chanceOrder[chance], position);
+  //       const newState = { ...mainState, position: d, diceNumber: number };
+  //       setMainState(newState);
+  //     }
+  //   });
+  // }, [number]);
 
   return (
     <div className="">
@@ -51,11 +62,21 @@ const Interface: FC<InterfaceProps> = () => {
         <Repeat name={ver} direction="down" />
         <HomeBase color="yellow" />
       </div>
-      <DiceRolling number={number} handleClick={handleButtonClick} />
+      <DiceRolling />
 
       <div></div>
     </div>
   );
 };
 
-export default Interface;
+const mapStateToProps = (state: AppState) => ({
+  // mainState: mainState(state),
+});
+
+const mapDispatchToProps = {};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(Interface);

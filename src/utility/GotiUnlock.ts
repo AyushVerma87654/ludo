@@ -1,40 +1,44 @@
-import { dataType } from "../data";
+import { positionDataType } from "../data";
+import { pushPop } from "./PushPop";
 
-export const gotiUnlock = (goti: string, position: dataType) => {
-  console.log(goti);
-  // console.log(data);
+export const gotiUnlock = (
+  currentPosition: string,
+  whichColor: string,
+  positionData: positionDataType
+) => {
+  // if(positionData[currentPosition].item)
+  // console.log(currentPosition);
+  // console.log("positionData", positionData[currentPosition]);
+  // console.log("currentGoti", positionData[currentPosition].item[0]);
+  const moveGoti = positionData[currentPosition].item[0];
+  console.log(moveGoti);
+  positionData = pushPop("", currentPosition, positionData);
+  console.log(
+    "newPositionData1[currentPosition].item",
+    positionData[currentPosition].item
+  );
+  console.log(positionData);
+  const newPositionData = gotiUnlockToStar(whichColor, moveGoti, positionData);
 
-  for (let i = 1; i < 5; i++) {
-    const now = goti + JSON.stringify(i);
-    console.log(position[now].item);
-    if (position[now].item !== "") {
-      gotiUnlockToStar(goti, position[now].item, position);
-      position[now].item = "";
-      break;
-    }
-  }
-
-  return position;
+  return newPositionData;
 };
 
-export const gotiUnlockToStar = (
-  color: string,
-  goti: string,
-  position: dataType
+const gotiUnlockToStar = (
+  whichColor: string,
+  moveGoti: string,
+  positionData: positionDataType
 ) => {
-  let index: string;
-  if (color == "blue") {
+  // console.log("moveGoti", moveGoti);
+  let index = "";
+  if (whichColor == "blue") {
     index = "0";
-  } else if (color == "yellow") {
+  } else if (whichColor == "yellow") {
     index = "39";
-  } else if (color == "green") {
+  } else if (whichColor == "green") {
     index = "26";
-  } else if (color == "red") {
+  } else if (whichColor == "red") {
     index = "13";
   }
-  position[index!].item += goti;
-  //   console.log(position[index!].item);
-  //   console.log(position);
-
-  return position;
+  return pushPop(moveGoti, index, positionData);
 };
+export default gotiUnlockToStar;

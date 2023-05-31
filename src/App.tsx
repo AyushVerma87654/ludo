@@ -2,27 +2,38 @@ import React from "react";
 import Interface from "./Interface";
 import Test from "./Test";
 import { data, chanceOrder } from "./data";
-import { mainStateType, ContextType } from "./models/MainState";
+// import { mainAppState, mainStateType } from "./models/MainState";
+import { gotiMovement } from "./utility/GotiMovement";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 
-export const StateContext = React.createContext<ContextType>({
-  mainState: { chance: -1, chanceOrder: {}, position: {} },
-  setMainState: () => {},
-});
+const initialState = {
+  chance: -1,
+  chanceOrder,
+  positionData: data,
+  diceNumber: 3,
+  played: false,
+  canPlay: false,
+  gotiCutToken: false,
+};
+
+// export const StateContext = React.createContext<mainAppState>({
+//   mainState: initialState,
+//   setMainState: () => {},
+// });
 
 function App() {
-  const [mainState, setMainState] = React.useState<mainStateType>({
-    chance: -1,
-    chanceOrder,
-    position: data,
-  });
+  // const [mainState, setMainState] = React.useState<mainStateType>(initialState);
 
   return (
-    <StateContext.Provider value={{ mainState, setMainState }}>
+    <Provider store={store()}>
+      {/* <StateContext.Provider value={{ mainState, setMainState }}> */}
       <div className="relative flex items-center justify-center text-blue-500 min-h-screen max-h-screen">
         <Interface />
         {/* <Test /> */}
       </div>
-    </StateContext.Provider>
+      {/* </StateContext.Provider> */}
+    </Provider>
   );
 }
 
