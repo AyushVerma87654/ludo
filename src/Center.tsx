@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import Style from "./style.module.css";
 
 interface CenterProps {}
 

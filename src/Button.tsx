@@ -1,10 +1,7 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { GiMoebiusStar } from "react-icons/gi";
 import { BsFillStarFill } from "react-icons/bs";
-import { data } from "./data";
 import GotiDisplay from "./GotiDisplay";
-import withUser from "./withUser";
-import { gotiMovement } from "./utility/GotiMovement";
 import { handleClick } from "./utility/OnClickFunction";
 import {
   chanceOrderSelector,
@@ -52,9 +49,6 @@ const Button: FC<ButtonProps> = ({
   hasNotPlayedChange,
   gotiCutTokenChange,
 }) => {
-  // const { chance, chanceOrder, positionData, diceNumber, played, canPlay } =
-  //   mainState;
-  // gotiMovement(chanceOrder[chance], position, diceNumber);
   const mainState = {
     positionData,
     canPlay,
@@ -73,7 +67,6 @@ const Button: FC<ButtonProps> = ({
     gotiCutTokenChange,
   };
 
-  // console.log("diceNumber", diceNumber);
   let gotiBgColor = "";
   let i: number;
   for (let i = 0; i < 52; i++) {

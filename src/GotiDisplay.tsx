@@ -20,11 +20,6 @@ const GotiDisplay: FC<GotiDisplayProps> = ({ item }) => {
   } else if (firstCharacter == "Y") {
     bgColor = "bg-yellow-500";
   }
-  // console.log("item", item, bgColor);
-  // console.log("item", item);
-  // if (item.item == "") {
-  //   return <div>hello</div>;
-  // }
   return (
     <div>
       {item?.item[0] && (

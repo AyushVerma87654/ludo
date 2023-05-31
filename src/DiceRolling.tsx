@@ -8,7 +8,6 @@ import {
   chanceSelector,
   positionDataSelector,
   diceNumberSelector,
-  playedSelector,
   canPlaySelector,
   gotiCutTokenSelector,
 } from "../redux/selectors";
@@ -33,19 +32,9 @@ const DiceRolling: FC<DiceRollingProps> = ({
   chanceOrder,
   diceNumber,
   positionData,
-  played,
   canPlay,
   gotiCutToken,
 }) => {
-  // const mainState = {
-  //   chance,
-  //   chanceOrder,
-  //   diceNumber,
-  //   positionData,
-  //   played,
-  //   canPlay,
-  // };
-  // console.log("chance", chance);
   const handleButtonClick = () => {
     const newDiceNumber = numGen();
     console.log("newDiceNumber", newDiceNumber);
@@ -88,7 +77,6 @@ const mapStateToProps = (state: AppState) => ({
   chance: chanceSelector(state),
   chanceOrder: chanceOrderSelector(state),
   diceNumber: diceNumberSelector(state),
-  played: playedSelector(state),
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
 });

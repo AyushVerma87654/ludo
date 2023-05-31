@@ -34,10 +34,6 @@ const HomeBase: FC<HomeBaseProps> = ({ color }) => {
             <RoundButton bgColor={bgColor} buttonId={color + "4"} />
           </div>
         </div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
       </div>
     </div>
   );

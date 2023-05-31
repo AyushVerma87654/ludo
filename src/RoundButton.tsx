@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 import GotiDisplay from "./GotiDisplay";
-import { gotiUnlock } from "./utility/GotiUnlock";
-import { gotiMovement } from "./utility/GotiMovement";
 import { handleClick } from "./utility/OnClickFunction";
 import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "../redux/reducer";
@@ -20,6 +18,7 @@ import {
   hasNotPlayedAction,
   hasPlayedAction,
   positionDataAction,
+  gotiCutTokenAction,
 } from "../redux/action/action";
 
 interface RoundButtonProps extends ReduxProps {
@@ -42,6 +41,7 @@ const RoundButton: FC<RoundButtonProps> = ({
   canPlayChange,
   canNotPlayChange,
   hasNotPlayedChange,
+  gotiCutTokenChange,
 }) => {
   const mainState = {
     positionData,
@@ -59,22 +59,8 @@ const RoundButton: FC<RoundButtonProps> = ({
     canPlayChange,
     canNotPlayChange,
     hasNotPlayedChange,
+    gotiCutTokenChange,
   };
-  // const handleClick = (buttonId: string) => {
-  //   console.log("buttonId", buttonId);
-  //   const data = gotiMovement(
-  //     buttonId,
-  //     chanceOrder[chance],
-  //     positionData,
-  //     diceNumber
-  //   );
-  //   const newState = {
-  //     ...mainState,
-  //     positionData: data.newPositionData,
-  //     played: data.played,
-  //   };
-  //   setMainState(newState);
-  // };
   const stone: string = positionData[buttonId].item[0]?.charAt(0);
   // console.log("stone", stone);
   if (stone == "Y") {
@@ -87,15 +73,10 @@ const RoundButton: FC<RoundButtonProps> = ({
     gotiBgColor = "bg-red-500";
   }
 
-  // console.log("positionData", positionData);
-
   const itemFound = Object.values(positionData).find(
     (positionData) => positionData.position === buttonId && !!positionData.item
   );
-  // itemFound && console.log(buttonId, itemFound);
-  // console.log("position", position);
   const item = itemFound ? itemFound.item : undefined;
-  // itemFound && console.log("itemFound.item", itemFound.item);
 
   const eachFunction = (item: { position: string; item: string }) => {
     if (item.item !== "") {
@@ -177,6 +158,7 @@ const mapDispatchToProps = {
   hasNotPlayedChange: hasNotPlayedAction,
   hasPlayedChange: hasPlayedAction,
   canPlayChange: canPlayAction,
+  gotiCutTokenChange: gotiCutTokenAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
