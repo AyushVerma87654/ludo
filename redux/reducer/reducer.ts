@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { data, positionDataType } from "../../src/data";
 import { chanceOrder } from "../../src/data";
 import { StateActionType } from "../action/constants";
-import { Action } from "../Action";
+import { Action } from "../action/index";
 
 export type mainState = {
   chance: number;
