@@ -44,14 +44,14 @@ const DiceRolling: FC<DiceRollingProps> = ({
           <div>{diceNumber}</div>
           {chance !== -1 && <div>Chance : {chanceOrder[chance]}</div>}
         </div>
-        <div>
+        {/* <div>
           <button
             className="bg-black text-white p-3"
             onClick={() => handleButtonClick()}
           >
             Skip
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
