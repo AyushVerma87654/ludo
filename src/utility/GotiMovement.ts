@@ -8,7 +8,6 @@ export const gotiMovement = (
   whichColor: string,
   positionData: positionDataType,
   diceNumber: number,
-  chance: number,
   gotiCutTokenChange: gotiCutTokenType,
   gotiReachedWinChange: gotiCutTokenType
 ) => {
@@ -17,7 +16,6 @@ export const gotiMovement = (
     Number.isNaN(+currentPosition) &&
     currentPosition.includes(whichColor)
   ) {
-    console.log("goti movement called insideOne");
     const newPositionData = gotiUnlock(
       currentPosition,
       whichColor,
@@ -33,7 +31,6 @@ export const gotiMovement = (
       positionData,
       diceNumber,
       whichColor,
-      chance,
       gotiCutTokenChange,
       gotiReachedWinChange
     );

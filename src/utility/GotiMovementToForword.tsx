@@ -7,7 +7,6 @@ export const gotiMovementToForword = (
   position: positionDataType,
   diceNumber: number,
   whichColor: string,
-  chance: number,
   gotiCutTokenChange: gotiCutTokenType,
   gotiReachedWinChange: gotiCutTokenType
 ) => {
@@ -115,12 +114,8 @@ const swapDirection = (
     Y: 37,
   };
   const breakPointsIndex = breakPointsValues[gotiColor];
-  if (
-    (gotiColor === "B" && breakPointsIndex >= currentPosition) ||
-    (gotiColor === "G" && breakPointsIndex >= currentPosition) ||
-    (gotiColor === "R" && breakPointsIndex >= currentPosition) ||
-    (gotiColor === "Y" && breakPointsIndex >= currentPosition)
-  ) {
+
+  if (breakPointsIndex >= currentPosition) {
     for (let i = 1; i <= 6; i++) {
       if (currentPosition + diceNumber === breakPointsIndex + i && i !== 6) {
         return "C" + gotiColor + JSON.stringify(i);
@@ -152,19 +147,31 @@ const gotiCut = (
 ) => {
   positionData = pushPop("", currentPosition, positionData, goti);
   const gotiColor = goti.charAt(0);
-  if (gotiColor === "R") {
-    positionData = gotiCutSwap("red", positionData, goti);
-    gotiCutTokenChange();
-  } else if (gotiColor === "G") {
-    positionData = gotiCutSwap("green", positionData, goti);
-    gotiCutTokenChange();
-  } else if (gotiColor === "B") {
-    positionData = gotiCutSwap("blue", positionData, goti);
-    gotiCutTokenChange();
-  } else if (gotiColor === "Y") {
-    positionData = gotiCutSwap("yellow", positionData, goti);
-    gotiCutTokenChange();
-  }
+  let object: { [a: string]: string } = {
+    R: "red",
+    B: "blue",
+    G: "green",
+    Y: "yellow",
+  };
+  Object.keys(object).map((item) => {
+    if (gotiColor === item) {
+      positionData = gotiCutSwap(object[item], positionData, goti);
+      gotiCutTokenChange();
+    }
+  });
+  // if (gotiColor === "R") {
+  //   positionData = gotiCutSwap("red", positionData, goti);
+  //   gotiCutTokenChange();
+  // } else if (gotiColor === "G") {
+  //   positionData = gotiCutSwap("green", positionData, goti);
+  //   gotiCutTokenChange();
+  // } else if (gotiColor === "B") {
+  //   positionData = gotiCutSwap("blue", positionData, goti);
+  //   gotiCutTokenChange();
+  // } else if (gotiColor === "Y") {
+  //   positionData = gotiCutSwap("yellow", positionData, goti);
+  //   gotiCutTokenChange();
+  // }
   return positionData;
 };
 

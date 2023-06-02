@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { ConnectedProps, connect } from "react-redux";
-import { positionDataSelector } from "../redux/selectors";
-import { AppState } from "../redux/reducer";
+import { positionDataSelector } from "./redux/selectors";
+import { AppState } from "./redux/reducer";
 
 interface DummyCenterProps extends ReduxProps {
   onClick: () => void;

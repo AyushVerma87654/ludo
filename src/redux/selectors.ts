@@ -40,5 +40,5 @@ export const positionDataSelector = createSelector(
 
 export const gotiReachedWinSelector = createSelector(
   [mainStateSelector],
-  (state) => state.gotiReachedWin
+  (state) => state.gotiReachedWinToken
 );

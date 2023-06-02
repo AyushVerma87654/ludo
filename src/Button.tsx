@@ -12,18 +12,16 @@ import {
   canPlaySelector,
   gotiCutTokenSelector,
   gotiReachedWinSelector,
-} from "../redux/selectors";
-import { AppState } from "../redux/reducer";
+} from "./redux/selectors";
+import { AppState } from "./redux/reducer";
 import { ConnectedProps, connect } from "react-redux";
 import {
   canPlayAction,
-  canNotPlayAction,
-  hasNotPlayedAction,
-  hasPlayedAction,
   positionDataAction,
   gotiCutTokenAction,
   gotiReachedWinAction,
-} from "../redux/action/action";
+  playedAction,
+} from "./redux/action/action";
 
 interface ButtonProps extends ReduxProps {
   index: number;
@@ -44,12 +42,10 @@ const Button: FC<ButtonProps> = ({
   chanceOrder,
   diceNumber,
   gotiCutToken,
-  gotiReachedWin,
+  gotiReachedWinToken,
   positionDataChange,
-  hasPlayedChange,
+  playedChange,
   canPlayChange,
-  canNotPlayChange,
-  hasNotPlayedChange,
   gotiCutTokenChange,
   gotiReachedWinChange,
 }) => {
@@ -61,14 +57,12 @@ const Button: FC<ButtonProps> = ({
     chanceOrder,
     diceNumber,
     gotiCutToken,
-    gotiReachedWin,
+    gotiReachedWinToken,
   };
   const setMainState = {
     positionDataChange,
-    hasPlayedChange,
+    playedChange,
     canPlayChange,
-    canNotPlayChange,
-    hasNotPlayedChange,
     gotiCutTokenChange,
     gotiReachedWinChange,
   };
@@ -246,14 +240,12 @@ const mapStateToProps = (state: AppState) => ({
   played: playedSelector(state),
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
-  gotiReachedWin: gotiReachedWinSelector(state),
+  gotiReachedWinToken: gotiReachedWinSelector(state),
 });
 
 const mapDispatchToProps = {
   positionDataChange: positionDataAction,
-  canNotPlayChange: canNotPlayAction,
-  hasNotPlayedChange: hasNotPlayedAction,
-  hasPlayedChange: hasPlayedAction,
+  playedChange: playedAction,
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
   gotiReachedWinChange: gotiReachedWinAction,

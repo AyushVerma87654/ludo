@@ -1,4 +1,4 @@
-import { mainState } from "../../redux/reducer/reducer";
+import { mainState } from "../redux/reducer/reducer";
 import { setMainStateType } from "../Button";
 import { gotiMovement } from "./GotiMovement";
 
@@ -9,21 +9,12 @@ export const handleClick = (
 ) => {
   console.log("buttonId", buttonId);
 
-  const {
-    chance,
-    chanceOrder,
-    positionData,
-    diceNumber,
-    played,
-    canPlay,
-    gotiCutToken,
-  } = mainState;
+  const { chance, chanceOrder, positionData, diceNumber, played, canPlay } =
+    mainState;
   const {
     canPlayChange,
     positionDataChange,
-    canNotPlayChange,
-    hasNotPlayedChange,
-    hasPlayedChange,
+    playedChange,
     gotiCutTokenChange,
     gotiReachedWinChange,
   } = setMainState;
@@ -40,7 +31,6 @@ export const handleClick = (
       chanceOrder[chance],
       positionData,
       diceNumber,
-      chance,
       gotiCutTokenChange,
       gotiReachedWinChange
     );
@@ -63,15 +53,7 @@ export const handleClick = (
     }
 
     positionDataChange(newPositionData);
-    if (token) {
-      hasNotPlayedChange();
-      if (canPlay) {
-        canPlayChange();
-      } else {
-        canNotPlayChange();
-      }
-    } else {
-      hasPlayedChange();
-    }
+    playedChange(!token);
+    canPlayChange(token ? (canPlay ? true : false) : false);
   }
 };
