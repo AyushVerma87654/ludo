@@ -20,6 +20,14 @@ export const pushPop = (
         item: [...newArray],
       },
     };
+  } else if (moveGoti === "") {
+    return {
+      ...positionData,
+      [currentPosition]: {
+        position: currentPosition,
+        item: [] as string[],
+      },
+    };
   } else {
     return {
       ...positionData,
