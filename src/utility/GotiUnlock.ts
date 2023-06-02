@@ -6,18 +6,8 @@ export const gotiUnlock = (
   whichColor: string,
   positionData: positionDataType
 ) => {
-  // if(positionData[currentPosition].item)
-  // console.log(currentPosition);
-  // console.log("positionData", positionData[currentPosition]);
-  // console.log("currentGoti", positionData[currentPosition].item[0]);
   const moveGoti = positionData[currentPosition].item[0];
-  console.log(moveGoti);
   positionData = pushPop("", currentPosition, positionData);
-  console.log(
-    "newPositionData1[currentPosition].item",
-    positionData[currentPosition].item
-  );
-  console.log(positionData);
   const newPositionData = gotiUnlockToStar(whichColor, moveGoti, positionData);
 
   return newPositionData;
@@ -28,7 +18,6 @@ const gotiUnlockToStar = (
   moveGoti: string,
   positionData: positionDataType
 ) => {
-  // console.log("moveGoti", moveGoti);
   let index = "";
   if (whichColor == "blue") {
     index = "0";

@@ -15,3 +15,5 @@ function App() {
 }
 
 export default App;
+
+// if all win goti remove it from chanceOrder

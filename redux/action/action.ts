@@ -35,3 +35,7 @@ export const canNotPlayAction = () => ({
 export const gotiCutTokenAction = () => ({
   type: StateActionType.GOTI_CUT_TOKEN,
 });
+
+export const gotiReachedWinAction = () => ({
+  type: StateActionType.GOTI_REACHED_WIN,
+});

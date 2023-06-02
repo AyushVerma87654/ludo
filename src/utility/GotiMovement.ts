@@ -9,40 +9,35 @@ export const gotiMovement = (
   positionData: positionDataType,
   diceNumber: number,
   chance: number,
-  gotiCutTokenChange: gotiCutTokenType
+  gotiCutTokenChange: gotiCutTokenType,
+  gotiReachedWinChange: gotiCutTokenType
 ) => {
-  // console.log("goti movement called");
-  // console.log("currentPosition", currentPosition);
-  // console.log("whichColor", whichColor);
-  // console.log("includes", currentPosition.includes(whichColor));
   if (
     diceNumber === 6 &&
     Number.isNaN(+currentPosition) &&
     currentPosition.includes(whichColor)
   ) {
-    // console.log("goti movement called insideOne");
+    console.log("goti movement called insideOne");
     const newPositionData = gotiUnlock(
       currentPosition,
       whichColor,
       positionData
     );
     return newPositionData;
-  } else {
-    // if (Number.isNaN(+currentPosition)) {
-    //   return { newPositionData: positionData, played: true };
-    // } else
-    if (!Number.isNaN(+currentPosition)) {
-      const newPositionData = gotiMovementToForword(
-        currentPosition,
-        positionData,
-        diceNumber,
-        whichColor,
-        chance,
-        gotiCutTokenChange
-      );
-      return newPositionData;
-    }
-
-    return positionData;
+  } else if (
+    currentPosition.charAt(0) === "C" ||
+    Number.isNaN(+currentPosition) === false
+  ) {
+    const newPositionData = gotiMovementToForword(
+      currentPosition,
+      positionData,
+      diceNumber,
+      whichColor,
+      chance,
+      gotiCutTokenChange,
+      gotiReachedWinChange
+    );
+    return newPositionData;
   }
+  return positionData;
 };

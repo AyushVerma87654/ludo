@@ -10,6 +10,7 @@ import {
   diceNumberSelector,
   canPlaySelector,
   gotiCutTokenSelector,
+  gotiReachedWinSelector,
 } from "../redux/selectors";
 import {
   canNotPlayAction,
@@ -34,18 +35,22 @@ const DiceRolling: FC<DiceRollingProps> = ({
   positionData,
   canPlay,
   gotiCutToken,
+  gotiReachedWinToken,
 }) => {
   const handleButtonClick = () => {
     const newDiceNumber = numGen();
-    console.log("newDiceNumber", newDiceNumber);
-    const newChance = chanceIncrement(chance, diceNumber, gotiCutToken);
-    // if (played === false) {
+    const newChance = chanceIncrement(
+      chance,
+      diceNumber,
+      gotiCutToken,
+      gotiReachedWinToken
+    );
     if (newDiceNumber == 6) {
       canPlayChange();
     } else {
       if (
         chance !== -1 &&
-        canPlayFunction(chanceOrder[newChance], positionData)
+        canPlayFunction(chanceOrder[newChance], positionData, newDiceNumber)
       ) {
         canPlayChange();
       } else {
@@ -59,15 +64,27 @@ const DiceRolling: FC<DiceRollingProps> = ({
 
   return (
     <div className="absolute left-0 top-0 p-12">
-      <button
-        className="bg-red-500 text-blue-900 p-2 disabled:bg-white"
-        disabled={canPlay}
-        onClick={() => handleButtonClick()}
-      >
-        Click Here
-      </button>
-      <div>{diceNumber}</div>
-      <div>Chance : {chanceOrder[chance]}</div>
+      <div className="flex justify-around">
+        <div>
+          <button
+            className="bg-red-500 text-blue-900 p-2 disabled:bg-white"
+            disabled={canPlay}
+            onClick={() => handleButtonClick()}
+          >
+            Click Here
+          </button>
+          <div>{diceNumber}</div>
+          <div>Chance : {chanceOrder[chance]}</div>
+        </div>
+        <div>
+          <button
+            className="bg-black text-white p-3"
+            onClick={() => handleButtonClick()}
+          >
+            Skip
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -79,6 +96,7 @@ const mapStateToProps = (state: AppState) => ({
   diceNumber: diceNumberSelector(state),
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
+  gotiReachedWinToken: gotiReachedWinSelector(state),
 });
 
 const mapDispatchToProps = {

@@ -11,6 +11,7 @@ import {
   playedSelector,
   canPlaySelector,
   gotiCutTokenSelector,
+  gotiReachedWinSelector,
 } from "../redux/selectors";
 import {
   canPlayAction,
@@ -19,6 +20,7 @@ import {
   hasPlayedAction,
   positionDataAction,
   gotiCutTokenAction,
+  gotiReachedWinAction,
 } from "../redux/action/action";
 
 interface RoundButtonProps extends ReduxProps {
@@ -36,12 +38,14 @@ const RoundButton: FC<RoundButtonProps> = ({
   chanceOrder,
   diceNumber,
   gotiCutToken,
+  gotiReachedWin,
   positionDataChange,
   hasPlayedChange,
   canPlayChange,
   canNotPlayChange,
   hasNotPlayedChange,
   gotiCutTokenChange,
+  gotiReachedWinChange,
 }) => {
   const mainState = {
     positionData,
@@ -51,6 +55,7 @@ const RoundButton: FC<RoundButtonProps> = ({
     chanceOrder,
     diceNumber,
     gotiCutToken,
+    gotiReachedWin,
   };
   let gotiBgColor = "";
   const setMainState = {
@@ -60,9 +65,9 @@ const RoundButton: FC<RoundButtonProps> = ({
     canNotPlayChange,
     hasNotPlayedChange,
     gotiCutTokenChange,
+    gotiReachedWinChange,
   };
   const stone: string = positionData[buttonId].item[0]?.charAt(0);
-  // console.log("stone", stone);
   if (stone == "Y") {
     gotiBgColor = "bg-yellow-500";
   } else if (stone == "B") {
@@ -78,39 +83,6 @@ const RoundButton: FC<RoundButtonProps> = ({
   );
   const item = itemFound ? itemFound.item : undefined;
 
-  const eachFunction = (item: { position: string; item: string }) => {
-    if (item.item !== "") {
-      console.log("not empty", item);
-    }
-  };
-  // console.log("position", position);
-
-  // console.log("chance", chanceOrder[chance]);
-
-  // console.log("position", position);
-
-  // (item) => {
-  //   if (item.item !== "") {
-  //     console.log("not empty", item);
-  //   }
-  // };
-
-  // console.log(
-  //   " Object.values(position).forEach(eachFunction);",
-  //   Object.values(position).forEach((item) => {
-  //     if (item.item !== "") {
-  //       console.log("not empty", item);
-  //     }
-  //   })
-  // );
-
-  // if (bgColor == "bg-red-500") {
-  // }
-  // if (data[buttonId].item != "") {
-  //   // console.log("data[JSON.stringify(buttonId)].item", data[buttonId].item);
-  // }
-  // console.log("data[JSON.stringify(buttonId)].item", data[buttonId]);
-  // // if()
   return (
     <div
       className={`flex items-center justify-center border border-black rounded-full w-10 h-10 ${bgColor}`}
@@ -126,17 +98,6 @@ const RoundButton: FC<RoundButtonProps> = ({
         ) : (
           <></>
         )}
-        {/* {Object.values(position).forEach((item) => {
-          if (item.item !== "") {
-            return <GotiDisplay item={item} />;
-          }
-        })} */}
-
-        {/* {Object.values(position).filter((item) => {
-          if (item.item !== "") {
-            return <GotiDisplay item={item} />;
-          }
-        })} */}
       </div>
     </div>
   );
@@ -150,6 +111,7 @@ const mapStateToProps = (state: AppState) => ({
   played: playedSelector(state),
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
+  gotiReachedWin: gotiReachedWinSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -159,6 +121,7 @@ const mapDispatchToProps = {
   hasPlayedChange: hasPlayedAction,
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
+  gotiReachedWinChange: gotiReachedWinAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

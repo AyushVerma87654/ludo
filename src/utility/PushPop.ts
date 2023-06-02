@@ -5,9 +5,7 @@ export const pushPop = (
   currentPosition: string,
   positionData: positionDataType,
   popGoti?: string
-) => {
-  console.log(popGoti);
-
+): positionDataType => {
   if (moveGoti === "" && popGoti !== undefined) {
     const index = positionData[currentPosition].item.indexOf(popGoti);
     let newArray = [...positionData[currentPosition].item];
@@ -20,14 +18,6 @@ export const pushPop = (
       [currentPosition]: {
         position: currentPosition,
         item: [...newArray],
-      },
-    };
-  } else if (moveGoti === "") {
-    return {
-      ...positionData,
-      [currentPosition]: {
-        position: currentPosition,
-        item: [] as string[],
       },
     };
   } else {

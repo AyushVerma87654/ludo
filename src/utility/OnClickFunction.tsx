@@ -25,27 +25,27 @@ export const handleClick = (
     hasNotPlayedChange,
     hasPlayedChange,
     gotiCutTokenChange,
+    gotiReachedWinChange,
   } = setMainState;
   if (canPlay && !played) {
+    console.log("diceNumber", diceNumber);
     let moveGoti = "";
     positionData[buttonId].item.map((item) => {
       if (item.charAt(0) === chanceOrder[chance].charAt(0).toUpperCase()) {
         moveGoti = item;
       }
-      // console.log("item", item);
     });
-    console.log("moveGoti", moveGoti);
     const newPositionData = gotiMovement(
       buttonId,
       chanceOrder[chance],
       positionData,
       diceNumber,
       chance,
-      gotiCutTokenChange
+      gotiCutTokenChange,
+      gotiReachedWinChange
     );
 
     let token: boolean = true;
-    console.log("moveGoti", moveGoti);
 
     if (moveGoti !== "") {
       if (newPositionData[buttonId].item.length === 0) {
@@ -53,19 +53,14 @@ export const handleClick = (
       }
       newPositionData[buttonId].item.map((item) => {
         if (item === moveGoti) {
-          console.log("inside if");
           token = true;
-          console.log("item", item);
         } else {
           token = false;
-          console.log("else called");
         }
       });
     } else {
       token = true;
-      console.log("outside called");
     }
-    // console.log("token", token);
 
     positionDataChange(newPositionData);
     if (token) {
@@ -78,12 +73,5 @@ export const handleClick = (
     } else {
       hasPlayedChange();
     }
-    // const newState = {
-    //   ...mainState,
-    //   positionData: newPositionData,
-    //   played: token,
-    //   canPlay: token ? false : canPlay,
-    // };
-    // setMainState(newState);
   }
 };

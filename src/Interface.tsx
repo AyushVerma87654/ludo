@@ -28,8 +28,6 @@ const Interface: FC<InterfaceProps> = ({}) => {
         <HomeBase color="yellow" />
       </div>
       <DiceRolling />
-
-      <div></div>
     </div>
   );
 };

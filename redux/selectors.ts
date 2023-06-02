@@ -37,3 +37,8 @@ export const positionDataSelector = createSelector(
   [mainStateSelector],
   (state) => state.positionData
 );
+
+export const gotiReachedWinSelector = createSelector(
+  [mainStateSelector],
+  (state) => state.gotiReachedWin
+);

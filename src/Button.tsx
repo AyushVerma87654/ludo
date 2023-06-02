@@ -11,6 +11,7 @@ import {
   playedSelector,
   canPlaySelector,
   gotiCutTokenSelector,
+  gotiReachedWinSelector,
 } from "../redux/selectors";
 import { AppState } from "../redux/reducer";
 import { ConnectedProps, connect } from "react-redux";
@@ -21,6 +22,7 @@ import {
   hasPlayedAction,
   positionDataAction,
   gotiCutTokenAction,
+  gotiReachedWinAction,
 } from "../redux/action/action";
 
 interface ButtonProps extends ReduxProps {
@@ -42,12 +44,14 @@ const Button: FC<ButtonProps> = ({
   chanceOrder,
   diceNumber,
   gotiCutToken,
+  gotiReachedWin,
   positionDataChange,
   hasPlayedChange,
   canPlayChange,
   canNotPlayChange,
   hasNotPlayedChange,
   gotiCutTokenChange,
+  gotiReachedWinChange,
 }) => {
   const mainState = {
     positionData,
@@ -57,6 +61,7 @@ const Button: FC<ButtonProps> = ({
     chanceOrder,
     diceNumber,
     gotiCutToken,
+    gotiReachedWin,
   };
   const setMainState = {
     positionDataChange,
@@ -65,6 +70,7 @@ const Button: FC<ButtonProps> = ({
     canNotPlayChange,
     hasNotPlayedChange,
     gotiCutTokenChange,
+    gotiReachedWinChange,
   };
 
   let gotiBgColor = "";
@@ -85,50 +91,33 @@ const Button: FC<ButtonProps> = ({
     }
   }
 
-  let bgColor = "";
-  // const handleClick = (id: string) => {
-  //   console.log("id", id);
-  //   const data = gotiMovement(
-  //     JSON.stringify(buttonId),
-  //     chanceOrder[chance],
-  //     positionData,
-  //     diceNumber
-  //   );
-  //   const newState = {
-  //     ...mainState,
-  //     positionData: data.newPositionData,
-  //     played: data.played,
-  //   };
-  //   setMainState(newState);
-  // };
   let borderHorizontal = "border-r-transparent ";
-  let buttonId: string | number = 0;
+  let buttonId: string = "0";
   let star1 = { red: false, blue: false, green: false, yellow: false };
   let star2 = { red: false, blue: false, green: false, yellow: false };
   let bgHorizontal = "";
   let bgVertical = "";
-  let str = "";
   let borderVertical = "border-b-transparent ";
   if (name == "horizontal") {
     if (direction == "left") {
       if (middle == 2) {
-        buttonId = 10 - index;
+        buttonId = JSON.stringify(10 - index);
       } else if (middle == 1 && index == 0) {
-        buttonId = 11;
+        buttonId = JSON.stringify(11);
       } else if (middle == 1 && index !== 0) {
         buttonId = "CR" + index;
       } else if (middle == 0) {
-        buttonId = 12 + index;
+        buttonId = JSON.stringify(12 + index);
       }
     } else if (direction == "right") {
       if (middle == 2) {
-        buttonId = 43 - index;
+        buttonId = JSON.stringify(43 - index);
       } else if (middle == 1 && index == 5) {
-        buttonId = 37;
+        buttonId = JSON.stringify(37);
       } else if (middle == 1 && index !== 5) {
         buttonId = "CY" + (5 - index);
       } else if (middle == 0) {
-        buttonId = 31 + index;
+        buttonId = JSON.stringify(31 + index);
       }
     }
     if (index == 5) {
@@ -164,23 +153,23 @@ const Button: FC<ButtonProps> = ({
   } else if (name == "vertical") {
     if (direction == "up") {
       if (middle == 0) {
-        buttonId = 23 - index;
+        buttonId = JSON.stringify(23 - index);
       } else if (middle == 1 && index == 0) {
-        buttonId = 24;
+        buttonId = JSON.stringify(24);
       } else if (middle == 1 && index !== 0) {
         buttonId = "CG" + index;
       } else if (middle == 2) {
-        buttonId = 25 + index;
+        buttonId = JSON.stringify(25 + index);
       }
     } else if (direction == "down") {
       if (middle == 0 && index == 5) {
-        buttonId = 51;
+        buttonId = JSON.stringify(51);
       } else if (middle == 1 && index == 5) {
-        buttonId = 50;
+        buttonId = JSON.stringify(50);
       } else if (middle == 2) {
-        buttonId = 44 + index;
+        buttonId = JSON.stringify(44 + index);
       } else if (middle == 0 && index !== 5) {
-        buttonId = 4 - index;
+        buttonId = JSON.stringify(4 - index);
       } else if (middle == 1 && index !== 5) {
         buttonId = "CB" + (5 - index);
       }
@@ -225,9 +214,9 @@ const Button: FC<ButtonProps> = ({
   return (
     <div
       className={`flex items-center justify-center border border-black w-10 h-10 ${borderHorizontal} ${borderVertical} ${bgHorizontal}  ${bgVertical}`}
-      id={JSON.stringify(buttonId)}
+      id={buttonId}
       onClick={() => {
-        handleClick(JSON.stringify(buttonId), mainState, setMainState);
+        handleClick(buttonId, mainState, setMainState);
       }}
     >
       {(star1.red || star1.yellow || star1.green || star1.blue) && (
@@ -257,6 +246,7 @@ const mapStateToProps = (state: AppState) => ({
   played: playedSelector(state),
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
+  gotiReachedWin: gotiReachedWinSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -266,6 +256,7 @@ const mapDispatchToProps = {
   hasPlayedChange: hasPlayedAction,
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
+  gotiReachedWinChange: gotiReachedWinAction,
 };
 
 export type setMainStateType = typeof mapDispatchToProps;

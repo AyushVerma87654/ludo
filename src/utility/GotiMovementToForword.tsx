@@ -8,7 +8,8 @@ export const gotiMovementToForword = (
   diceNumber: number,
   whichColor: string,
   chance: number,
-  gotiCutTokenChange: gotiCutTokenType
+  gotiCutTokenChange: gotiCutTokenType,
+  gotiReachedWinChange: gotiCutTokenType
 ) => {
   let moveGoti = "";
   const chanceColor = whichColor.charAt(0).toUpperCase();
@@ -17,76 +18,88 @@ export const gotiMovementToForword = (
       moveGoti = item;
     }
   });
-  // console.log("moveGoti", moveGoti);
   const gotiColor = moveGoti.charAt(0);
-  // console.log("whichColor", chanceColor);
-  // console.log("gotiColor", gotiColor);
   if (gotiColor === chanceColor) {
     position = pushPop("", currentPosition, position, moveGoti);
-    let newCurrentPosition = +currentPosition + diceNumber;
-    let newCurrentPositionString = swapDirection(
-      +currentPosition,
-      diceNumber,
-      gotiColor
-    );
-    console.log("newCurrentPositionString", newCurrentPositionString);
-
-    if (!Number.isNaN(+newCurrentPositionString)) {
-      console.log("if called");
-      position = pushPop(moveGoti, newCurrentPositionString, position);
+    if (currentPosition.charAt(0) === "C") {
+      position[currentPosition].item.map((item) => {
+        if (chanceColor === item.charAt(0)) {
+          moveGoti = item;
+        }
+      });
+      position = pushPop("", currentPosition, position, moveGoti);
+      const newCurrentPosition = winLineGotiMove(currentPosition, diceNumber);
+      if (newCurrentPosition !== "") {
+        gotiReachedWinChange();
+      }
+      position = {
+        ...position,
+        [newCurrentPosition]: {
+          position: newCurrentPosition,
+          item: [...position[newCurrentPosition].item, moveGoti],
+        },
+      };
     } else {
-      newCurrentPositionString = JSON.stringify(
-        swapPosition(gotiColor, newCurrentPosition)
+      let newCurrentPosition = +currentPosition + diceNumber;
+      let newCurrentPositionString = swapDirection(
+        +currentPosition,
+        diceNumber,
+        gotiColor
       );
-      console.log("else called");
+
       if (
-        newCurrentPositionString === "0" ||
-        newCurrentPositionString === "8" ||
-        newCurrentPositionString === "13" ||
-        newCurrentPositionString === "21" ||
-        newCurrentPositionString === "26" ||
-        newCurrentPositionString === "34" ||
-        newCurrentPositionString === "39" ||
-        newCurrentPositionString === "47"
+        newCurrentPositionString.charAt(0) === "C" ||
+        newCurrentPositionString.charAt(0) === "w"
       ) {
-        console.log("inside if called");
         position = pushPop(moveGoti, newCurrentPositionString, position);
-      } else {
-        // console.log("inside else called");
-        console.log(
-          "position[newCurrentPositionString]",
-          newCurrentPositionString
+      } else if (!Number.isNaN(+newCurrentPositionString)) {
+        newCurrentPositionString = JSON.stringify(
+          swapPosition(gotiColor, newCurrentPosition)
         );
-        // let token = false;
-        if (position[newCurrentPositionString].item.length === 0) {
+        if (
+          newCurrentPositionString === "0" ||
+          newCurrentPositionString === "8" ||
+          newCurrentPositionString === "13" ||
+          newCurrentPositionString === "21" ||
+          newCurrentPositionString === "26" ||
+          newCurrentPositionString === "34" ||
+          newCurrentPositionString === "39" ||
+          newCurrentPositionString === "47"
+        ) {
           position = pushPop(moveGoti, newCurrentPositionString, position);
         } else {
-          position[newCurrentPositionString].item.map((item) => {
-            if (
-              item.charAt(0).toUpperCase() ===
-              whichColor.charAt(0).toUpperCase()
-            ) {
-              console.log("inside if called");
-              position = pushPop(moveGoti, newCurrentPositionString, position);
-            } else {
-              console.log("inside else called");
-              console.log("newCurrentPositionString", newCurrentPositionString);
-
-              position = gotiCut(
-                position[newCurrentPositionString].item[0],
-                newCurrentPositionString,
-                position,
-                chance,
-                gotiCutTokenChange
-              );
-              position = pushPop(moveGoti, newCurrentPositionString, position);
-            }
-          });
+          if (position[newCurrentPositionString].item.length === 0) {
+            position = pushPop(moveGoti, newCurrentPositionString, position);
+          } else {
+            position[newCurrentPositionString].item.map((item) => {
+              if (
+                item.charAt(0).toUpperCase() ===
+                whichColor.charAt(0).toUpperCase()
+              ) {
+                position = pushPop(
+                  moveGoti,
+                  newCurrentPositionString,
+                  position
+                );
+              } else {
+                position = gotiCut(
+                  position[newCurrentPositionString].item[0],
+                  newCurrentPositionString,
+                  position,
+                  gotiCutTokenChange
+                );
+                position = pushPop(
+                  moveGoti,
+                  newCurrentPositionString,
+                  position
+                );
+              }
+            });
+          }
         }
       }
     }
   }
-  console.log("position", position);
   return position;
 };
 
@@ -95,7 +108,6 @@ const swapDirection = (
   diceNumber: number,
   gotiColor: string
 ) => {
-  let newCurrentPosition = "";
   const breakPointsValues: { [a: string]: number } = {
     B: 50,
     R: 11,
@@ -109,14 +121,14 @@ const swapDirection = (
     (gotiColor === "R" && breakPointsIndex >= currentPosition) ||
     (gotiColor === "Y" && breakPointsIndex >= currentPosition)
   ) {
-    console.log("breakPointsIndex", breakPointsIndex);
-    console.log("currentPosition", currentPosition);
-    for (let i = 1; i < 6; i++) {
-      if (currentPosition + diceNumber === breakPointsIndex + i) {
-        console.log("if callled");
-        newCurrentPosition = "C" + gotiColor + JSON.stringify(i);
-        console.log("newCurrentPosition", newCurrentPosition);
-        return newCurrentPosition;
+    for (let i = 1; i <= 6; i++) {
+      if (currentPosition + diceNumber === breakPointsIndex + i && i !== 6) {
+        return "C" + gotiColor + JSON.stringify(i);
+      } else if (
+        currentPosition + diceNumber === breakPointsIndex + i &&
+        i === 6
+      ) {
+        return "win";
       }
     }
   }
@@ -136,22 +148,21 @@ const gotiCut = (
   goti: string,
   currentPosition: string,
   positionData: positionDataType,
-  chance: number,
   gotiCutTokenChange: gotiCutTokenType
 ) => {
   positionData = pushPop("", currentPosition, positionData, goti);
   const gotiColor = goti.charAt(0);
   if (gotiColor === "R") {
-    positionData = gotiCutSwap("red", positionData, goti, chance);
+    positionData = gotiCutSwap("red", positionData, goti);
     gotiCutTokenChange();
   } else if (gotiColor === "G") {
-    positionData = gotiCutSwap("green", positionData, goti, chance);
+    positionData = gotiCutSwap("green", positionData, goti);
     gotiCutTokenChange();
   } else if (gotiColor === "B") {
-    positionData = gotiCutSwap("blue", positionData, goti, chance);
+    positionData = gotiCutSwap("blue", positionData, goti);
     gotiCutTokenChange();
   } else if (gotiColor === "Y") {
-    positionData = gotiCutSwap("yellow", positionData, goti, chance);
+    positionData = gotiCutSwap("yellow", positionData, goti);
     gotiCutTokenChange();
   }
   return positionData;
@@ -160,18 +171,29 @@ const gotiCut = (
 const gotiCutSwap = (
   baseIndex: string,
   positionData: positionDataType,
-  goti: string,
-  chance: number
+  goti: string
 ) => {
   for (let i = 1; i <= 4; i++) {
     const newBaseIndex = baseIndex + JSON.stringify(i);
-    console.log("baseIndex", baseIndex);
-    console.log("newBaseIndex", newBaseIndex);
-    console.log("goti", goti);
     if (positionData[newBaseIndex].item[0] === undefined) {
       positionData = pushPop(goti, newBaseIndex, positionData);
       return positionData;
     }
   }
   return positionData;
+};
+
+export const winLineGotiMove = (
+  currentPosition: string,
+  diceNumber: number
+) => {
+  const lastIndex = +currentPosition.charAt(2);
+  let newIndex = "";
+  if (lastIndex + diceNumber === 6) {
+    newIndex = "win";
+  } else if (lastIndex + diceNumber < 6) {
+    newIndex =
+      currentPosition.substring(0, 2) + JSON.stringify(lastIndex + diceNumber);
+  }
+  return newIndex;
 };

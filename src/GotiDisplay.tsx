@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 
 interface GotiDisplayProps {
-  bgColors?: string;
   item?: {
     position: string;
     item: string[];

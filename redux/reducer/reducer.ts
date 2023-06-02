@@ -12,6 +12,7 @@ export type mainState = {
   played: boolean;
   canPlay: boolean;
   gotiCutToken: boolean;
+  gotiReachedWin: boolean;
 };
 
 const initialState: mainState = {
@@ -22,6 +23,7 @@ const initialState: mainState = {
   played: false,
   canPlay: false,
   gotiCutToken: false,
+  gotiReachedWin: false,
 };
 
 const MainReducer = (mainState: mainState = initialState, action: Action) => {
@@ -30,6 +32,7 @@ const MainReducer = (mainState: mainState = initialState, action: Action) => {
       return produce(mainState, (state: mainState) => {
         state.diceNumber = action.payload;
         state.gotiCutToken = false;
+        state.gotiReachedWin = false;
       });
 
     case StateActionType.CHANCE:
@@ -66,6 +69,11 @@ const MainReducer = (mainState: mainState = initialState, action: Action) => {
     case StateActionType.GOTI_CUT_TOKEN:
       return produce(mainState, (state: mainState) => {
         state.gotiCutToken = true;
+      });
+
+    case StateActionType.GOTI_REACHED_WIN:
+      return produce(mainState, (state: mainState) => {
+        state.gotiReachedWin = true;
       });
 
     default:
