@@ -19,6 +19,7 @@ import {
   positionDataAction,
   gotiCutTokenAction,
   gotiReachedWinAction,
+  positionDataFilterAction,
 } from "./redux/action/action";
 
 interface RoundButtonProps extends ReduxProps {
@@ -42,6 +43,7 @@ const RoundButton: FC<RoundButtonProps> = ({
   canPlayChange,
   gotiCutTokenChange,
   gotiReachedWinChange,
+  positionDataFilter,
 }) => {
   const mainState = {
     positionData,
@@ -60,6 +62,7 @@ const RoundButton: FC<RoundButtonProps> = ({
     canPlayChange,
     gotiCutTokenChange,
     gotiReachedWinChange,
+    positionDataFilter,
   };
   const stone: string = positionData[buttonId].item[0]?.charAt(0);
   if (stone == "Y") {
@@ -114,6 +117,7 @@ const mapDispatchToProps = {
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
   gotiReachedWinChange: gotiReachedWinAction,
+  positionDataFilter: positionDataFilterAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

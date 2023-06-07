@@ -21,6 +21,7 @@ import {
   gotiCutTokenAction,
   gotiReachedWinAction,
   playedAction,
+  positionDataFilterAction,
 } from "./redux/action/action";
 
 interface ButtonProps extends ReduxProps {
@@ -48,6 +49,7 @@ const Button: FC<ButtonProps> = ({
   canPlayChange,
   gotiCutTokenChange,
   gotiReachedWinChange,
+  positionDataFilter,
 }) => {
   const mainState = {
     positionData,
@@ -65,6 +67,7 @@ const Button: FC<ButtonProps> = ({
     canPlayChange,
     gotiCutTokenChange,
     gotiReachedWinChange,
+    positionDataFilter,
   };
 
   let gotiBgColor = "";
@@ -249,6 +252,7 @@ const mapDispatchToProps = {
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
   gotiReachedWinChange: gotiReachedWinAction,
+  positionDataFilter: positionDataFilterAction,
 };
 
 export type setMainStateType = typeof mapDispatchToProps;

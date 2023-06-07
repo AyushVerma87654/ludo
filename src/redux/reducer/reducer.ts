@@ -93,6 +93,65 @@ const MainReducer = (mainState: mainState = initialState, action: Action) => {
         state.gotiReachedWinToken = true;
       });
 
+    case StateActionType.POSITION_DATA_FILTER:
+      return produce(mainState, (state: mainState) => {
+        let newPositionData = action.payload as positionDataType;
+        Object.values(newPositionData).map((item, index) => {
+          let newArray = [...item.item];
+          if (item.item.length !== 0 && item.item.length !== 1) {
+            const chanceColor = state.chanceOrder[state.chance]
+              .charAt(0)
+              .toUpperCase();
+            newArray.map((item, index) => {
+              if (item.charAt(0) === chanceColor && index !== 0) {
+                const temp = newArray[0];
+                newArray[0] = newArray[index];
+                newArray[index] = temp;
+              }
+            });
+          }
+          if (newPositionData[item.position].item.length !== 0) {
+            newPositionData = {
+              ...newPositionData,
+              [item.position]: { position: item.position, item: newArray },
+            };
+          }
+        });
+        state.positionData = newPositionData;
+      });
+
+    case StateActionType.PLAYER_WIN:
+      return produce(mainState, (state: mainState) => {
+        let temporaryChanceOrder = { ...state.chanceOrder };
+        if (
+          temporaryChanceOrder[action.payload.index] === action.payload.color
+        ) {
+          delete temporaryChanceOrder[action.payload.index];
+        }
+        const newArray = Object.values(temporaryChanceOrder);
+        let newChanceOrder: { [a: number]: string };
+        for (let i = 0; i < newArray.length; i++) {
+          if (i === 0) {
+            newChanceOrder = {
+              [i]: newArray[i],
+            };
+          }
+          newChanceOrder = {
+            ...newChanceOrder!,
+            [i]: newArray[i],
+          };
+        }
+        state.chanceOrder = newChanceOrder!;
+      });
+
+    case StateActionType.SHORTCUT:
+      return produce(mainState, (state: mainState) => {
+        state.diceNumber = 6;
+        state.gotiCutToken = false;
+        state.gotiReachedWinToken = false;
+        state.played = false;
+      });
+
     default:
       return mainState;
   }

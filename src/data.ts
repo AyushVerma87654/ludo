@@ -98,6 +98,13 @@ export type positionDataType = {
 
 export const chanceOrder = { 0: "blue", 1: "yellow", 2: "green", 3: "red" };
 
+export const mapObject: { [a: string]: string } = {
+  B: "blue",
+  Y: "yellow",
+  G: "green",
+  R: "red",
+};
+
 export const data: positionDataType = {
   0: { position: "0", item: [] },
   1: { position: "1", item: [] },

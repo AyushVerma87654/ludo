@@ -1,4 +1,4 @@
-import { positionDataType } from "../data";
+import { mapObject, positionDataType } from "../data";
 import { gotiCutTokenType } from "../models/MainState";
 import { pushPop } from "./PushPop";
 
@@ -28,7 +28,7 @@ export const gotiMovementToForword = (
       });
       position = pushPop("", currentPosition, position, moveGoti);
       const newCurrentPosition = winLineGotiMove(currentPosition, diceNumber);
-      if (newCurrentPosition !== "") {
+      if (newCurrentPosition === "win") {
         gotiReachedWinChange();
       }
       position = {
@@ -147,15 +147,10 @@ const gotiCut = (
 ) => {
   positionData = pushPop("", currentPosition, positionData, goti);
   const gotiColor = goti.charAt(0);
-  let object: { [a: string]: string } = {
-    R: "red",
-    B: "blue",
-    G: "green",
-    Y: "yellow",
-  };
-  Object.keys(object).map((item) => {
+
+  Object.keys(mapObject).map((item) => {
     if (gotiColor === item) {
-      positionData = gotiCutSwap(object[item], positionData, goti);
+      positionData = gotiCutSwap(mapObject[item], positionData, goti);
       gotiCutTokenChange();
     }
   });

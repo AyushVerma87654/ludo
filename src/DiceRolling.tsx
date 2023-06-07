@@ -5,11 +5,14 @@ import {
   chanceSelector,
   diceNumberSelector,
   canPlaySelector,
+  positionDataSelector,
 } from "./redux/selectors";
 import {
   canPlayAction,
   chanceAction,
   diceRollingAction,
+  positionDataFilterAction,
+  shortcutAction,
 } from "./redux/action/action";
 import { ConnectedProps, connect } from "react-redux";
 
@@ -23,17 +26,21 @@ const DiceRolling: FC<DiceRollingProps> = ({
   chanceOrder,
   diceNumber,
   canPlay,
+  positionData,
+  positionDataFilter,
+  shortCut,
 }) => {
   const handleButtonClick = () => {
     chanceChange();
     diceNumberChange();
     canPlayChange(null);
+    positionDataFilter(positionData);
   };
 
   return (
     <div className="absolute left-0 top-0 p-12">
-      <div className="flex justify-around">
-        <div>
+      <div className="flex space-x-4">
+        <div className="w-24">
           <button
             className="bg-red-500 text-blue-900 p-2 disabled:bg-white"
             disabled={canPlay}
@@ -51,6 +58,18 @@ const DiceRolling: FC<DiceRollingProps> = ({
           >
             Skip
           </button>
+        </div>
+        <div>
+          <button
+            className="bg-black text-white p-3"
+            onClick={() => {
+              shortCut();
+              chanceChange();
+              canPlayChange(null);
+            }}
+          >
+            6
+          </button>
         </div> */}
       </div>
     </div>
@@ -62,12 +81,15 @@ const mapStateToProps = (state: AppState) => ({
   chanceOrder: chanceOrderSelector(state),
   diceNumber: diceNumberSelector(state),
   canPlay: canPlaySelector(state),
+  positionData: positionDataSelector(state),
 });
 
 const mapDispatchToProps = {
   diceNumberChange: diceRollingAction,
   chanceChange: chanceAction,
   canPlayChange: canPlayAction,
+  positionDataFilter: positionDataFilterAction,
+  shortCut: shortcutAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

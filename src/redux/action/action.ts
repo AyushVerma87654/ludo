@@ -31,3 +31,17 @@ export const gotiCutTokenAction = () => ({
 export const gotiReachedWinAction = () => ({
   type: StateActionType.GOTI_REACHED_WIN,
 });
+
+export const playerWinAction = (data: { color: string; index: number }) => ({
+  type: StateActionType.PLAYER_WIN,
+  payload: data,
+});
+
+export const positionDataFilterAction = (data: positionDataType) => ({
+  type: StateActionType.POSITION_DATA_FILTER,
+  payload: data,
+});
+
+export const shortcutAction = () => ({
+  type: StateActionType.SHORTCUT,
+});

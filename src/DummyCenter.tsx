@@ -2,13 +2,34 @@ import React, { FC } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import { positionDataSelector } from "./redux/selectors";
 import { AppState } from "./redux/reducer";
+import { playerWinAction } from "./redux/action/action";
+import { mapObject } from "./data";
 
 interface DummyCenterProps extends ReduxProps {
   onClick: () => void;
 }
 
-const DummyCenter: FC<DummyCenterProps> = ({ onClick, positionData }) => {
+const DummyCenter: FC<DummyCenterProps> = ({
+  onClick,
+  positionData,
+  playerWin,
+}) => {
   const winArray = [...positionData["win"].item];
+  let object: { [a: string]: number } = {
+    B: 0,
+    Y: 0,
+    G: 0,
+    R: 0,
+  };
+  winArray.map((item) => {
+    object[item.charAt(0)] += 1;
+  });
+  Object.keys(object).map((item, index) => {
+    if (object[item] === 4) {
+      playerWin({ color: mapObject[item], index: index });
+    }
+  });
+
   return (
     <div
       className="w-[120px] h-[120px] border border-transparent flex flex-wrap"
@@ -37,7 +58,9 @@ const mapStateToProps = (state: AppState) => ({
   positionData: positionDataSelector(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  playerWin: playerWinAction,
+};
 
 export type setMainStateType = typeof mapDispatchToProps;
 

@@ -17,6 +17,7 @@ export const handleClick = (
     playedChange,
     gotiCutTokenChange,
     gotiReachedWinChange,
+    positionDataFilter,
   } = setMainState;
   if (canPlay && !played) {
     console.log("diceNumber", diceNumber);
@@ -26,7 +27,7 @@ export const handleClick = (
         moveGoti = item;
       }
     });
-    const newPositionData = gotiMovement(
+    let newPositionData = gotiMovement(
       buttonId,
       chanceOrder[chance],
       positionData,
@@ -53,6 +54,7 @@ export const handleClick = (
     }
 
     positionDataChange(newPositionData);
+    positionDataFilter(newPositionData);
     playedChange(!token);
     canPlayChange(token ? (canPlay ? true : false) : false);
   }
