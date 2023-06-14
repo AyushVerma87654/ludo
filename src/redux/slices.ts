@@ -31,7 +31,7 @@ const initialState: mainState = {
 };
 
 const stateSlice = createSlice({
-  name: "twoPlayer",
+  name: "main",
   initialState,
   reducers: {
     diceRolling,
@@ -122,9 +122,9 @@ function canPlay(state: mainState, action: PayloadAction<boolean | null>) {
       const token = canPlayFunction(
         state.chanceOrder[state.chance],
         state.positionData,
-        state.diceNumber,
-        state.totalPlayers
+        state.diceNumber
       );
+      console.log("token", token);
       state.canPlay = state.chance !== -1 && token;
     }
   } else {
@@ -223,6 +223,7 @@ function shortCut(state: mainState) {
 
 function setTotalPlayer(state: mainState, action: PayloadAction<number>) {
   state.totalPlayers = action.payload;
+  state.chance = -1;
   if (state.totalPlayers === 2) {
     state.chanceOrder = chanceOrder2;
     state.positionData = data2;

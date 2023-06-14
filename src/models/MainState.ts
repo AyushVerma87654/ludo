@@ -1,9 +1,8 @@
 import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
-export type gotiCutTokenType =
-  ActionCreatorWithoutPayload<"twoPlayer/gotiCutToken">;
+export type gotiCutTokenType = ActionCreatorWithoutPayload<"main/gotiCutToken">;
 export type gotiReachedWinChangeType =
-  ActionCreatorWithoutPayload<"twoPlayer/gotiReachedWinToken">;
+  ActionCreatorWithoutPayload<"main/gotiReachedWinToken">;
 
 export type positionDataType = {
   [a: string]: {
