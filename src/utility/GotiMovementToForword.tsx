@@ -1,5 +1,5 @@
-import { mapObject, positionDataType } from "../data";
-import { gotiCutTokenType } from "../models/MainState";
+import { mapObject } from "../data/index";
+import { gotiCutTokenType, positionDataType } from "../models/MainState";
 import { pushPop } from "./PushPop";
 
 export const gotiMovementToForword = (

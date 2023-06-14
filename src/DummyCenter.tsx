@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import { positionDataSelector } from "./redux/selectors";
-import { mapObject } from "./data";
 import { playerWinAction } from "./redux/slices";
 import { AppState } from "./redux/store";
+import { mapObject } from "./data/index";
 
 interface DummyCenterProps extends ReduxProps {}
 

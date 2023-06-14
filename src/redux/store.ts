@@ -3,7 +3,7 @@ import MainReducer from "./slices";
 
 const store = configureStore({
   reducer: {
-    mainState: MainReducer,
+    main: MainReducer,
   },
   devTools: true,
 });

@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { chanceOrder, data, positionDataType } from "./../data";
 import { canPlayFunction } from "./../utility/CanPlay";
+import { positionDataType } from "./../models/MainState";
+import { chanceOrder2, data2 } from "./../data/data2";
+import { chanceOrder3, data3 } from "./../data/data3";
+import { chanceOrder4, data4 } from "./../data/data4";
 
 export type mainState = {
   chance: number;
@@ -17,18 +20,18 @@ export type mainState = {
 
 const initialState: mainState = {
   chance: -1,
-  chanceOrder,
-  positionData: data,
+  chanceOrder: {},
+  positionData: {},
   diceNumber: 3,
   played: false,
   canPlay: false,
   gotiCutToken: false,
   gotiReachedWinToken: false,
-  totalPlayers: 4,
+  totalPlayers: 0,
 };
 
 const stateSlice = createSlice({
-  name: "mainState",
+  name: "twoPlayer",
   initialState,
   reducers: {
     diceRolling,
@@ -41,6 +44,7 @@ const stateSlice = createSlice({
     positionDataFilter,
     playerWin,
     shortCut,
+    setTotalPlayer,
   },
 });
 
@@ -57,6 +61,7 @@ export const {
   positionDataFilter: positionDataFilterAction,
   playerWin: playerWinAction,
   shortCut: shortcutAction,
+  setTotalPlayer: setTotalPlayerAction,
 } = actions;
 
 export default MainReducer;
@@ -214,4 +219,18 @@ function shortCut(state: mainState) {
   state.gotiCutToken = false;
   state.gotiReachedWinToken = false;
   state.played = false;
+}
+
+function setTotalPlayer(state: mainState, action: PayloadAction<number>) {
+  state.totalPlayers = action.payload;
+  if (state.totalPlayers === 2) {
+    state.chanceOrder = chanceOrder2;
+    state.positionData = data2;
+  } else if (state.totalPlayers === 3) {
+    state.chanceOrder = chanceOrder3;
+    state.positionData = data3;
+  } else if (state.totalPlayers === 4) {
+    state.chanceOrder = chanceOrder4;
+    state.positionData = data4;
+  }
 }

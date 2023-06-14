@@ -1,5 +1,12 @@
-import { StateActionType } from "../redux/action/constants";
+import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
 
 export type gotiCutTokenType = () => {
-  type: StateActionType;
+  type: ActionCreatorWithoutPayload<"mainState/gotiCutToken">;
+};
+
+export type positionDataType = {
+  [a: string]: {
+    position: string;
+    item: string[];
+  };
 };
