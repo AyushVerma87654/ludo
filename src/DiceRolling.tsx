@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { AppState } from "./redux/reducer";
+
 import {
   chanceOrderSelector,
   chanceSelector,
   diceNumberSelector,
   canPlaySelector,
   positionDataSelector,
+  totalPlayersSelector,
 } from "./redux/selectors";
 import {
   canPlayAction,
@@ -13,8 +14,9 @@ import {
   diceRollingAction,
   positionDataFilterAction,
   shortcutAction,
-} from "./redux/action/action";
+} from "./redux/slices";
 import { ConnectedProps, connect } from "react-redux";
+import { AppState } from "./redux/store";
 
 interface DiceRollingProps extends ReduxProps {}
 
@@ -34,7 +36,7 @@ const DiceRolling: FC<DiceRollingProps> = ({
     chanceChange();
     diceNumberChange();
     canPlayChange(null);
-    positionDataFilter(positionData);
+    positionDataFilter({ positionData, chanceColor: chanceOrder[chance] });
   };
 
   return (
@@ -51,7 +53,7 @@ const DiceRolling: FC<DiceRollingProps> = ({
           <div>{diceNumber}</div>
           {chance !== -1 && <div>Chance : {chanceOrder[chance]}</div>}
         </div>
-        {/* <div>
+        <div>
           <button
             className="bg-black text-white p-3"
             onClick={() => handleButtonClick()}
@@ -70,7 +72,7 @@ const DiceRolling: FC<DiceRollingProps> = ({
           >
             6
           </button>
-        </div> */}
+        </div>
       </div>
     </div>
   );
@@ -82,6 +84,7 @@ const mapStateToProps = (state: AppState) => ({
   diceNumber: diceNumberSelector(state),
   canPlay: canPlaySelector(state),
   positionData: positionDataSelector(state),
+  totalPlayers: totalPlayersSelector(state),
 });
 
 const mapDispatchToProps = {

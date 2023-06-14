@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import GotiDisplay from "./GotiDisplay";
 import { handleClick } from "./utility/OnClickFunction";
 import { ConnectedProps, connect } from "react-redux";
-import { AppState } from "./redux/reducer";
 import {
   chanceOrderSelector,
   chanceSelector,
@@ -16,11 +15,12 @@ import {
 import {
   canPlayAction,
   playedAction,
-  positionDataAction,
+  positionDataChangeAction,
   gotiCutTokenAction,
-  gotiReachedWinAction,
+  gotiReachedWinTokenAction,
   positionDataFilterAction,
-} from "./redux/action/action";
+} from "./redux/slices";
+import { AppState } from "./redux/store";
 
 interface RoundButtonProps extends ReduxProps {
   bgColor: string;
@@ -112,11 +112,11 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  positionDataChange: positionDataAction,
+  positionDataChange: positionDataChangeAction,
   playedChange: playedAction,
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
-  gotiReachedWinChange: gotiReachedWinAction,
+  gotiReachedWinChange: gotiReachedWinTokenAction,
   positionDataFilter: positionDataFilterAction,
 };
 

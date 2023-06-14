@@ -1,10 +1,9 @@
-import { mainState } from "../redux/reducer/reducer";
-import { setMainStateType } from "../Button";
+import { mainStateType, setMainStateType } from "../Button";
 import { gotiMovement } from "./GotiMovement";
 
 export const handleClick = (
   buttonId: string,
-  mainState: mainState,
+  mainState: mainStateType,
   setMainState: setMainStateType
 ) => {
   console.log("buttonId", buttonId);
@@ -20,7 +19,6 @@ export const handleClick = (
     positionDataFilter,
   } = setMainState;
   if (canPlay && !played) {
-    console.log("diceNumber", diceNumber);
     let moveGoti = "";
     positionData[buttonId].item.map((item) => {
       if (item.charAt(0) === chanceOrder[chance].charAt(0).toUpperCase()) {
@@ -54,7 +52,10 @@ export const handleClick = (
     }
 
     positionDataChange(newPositionData);
-    positionDataFilter(newPositionData);
+    positionDataFilter({
+      positionData: newPositionData,
+      chanceColor: chanceOrder[chance],
+    });
     playedChange(!token);
     canPlayChange(token ? (canPlay ? true : false) : false);
   }

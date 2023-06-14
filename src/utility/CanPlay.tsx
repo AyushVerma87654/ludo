@@ -3,10 +3,11 @@ import { positionDataType } from "../data";
 export const canPlayFunction = (
   whichColor: string,
   positionData: positionDataType,
-  diceNumber: number
+  diceNumber: number,
+  totalPlayers: number
 ) => {
   let token = false;
-  for (let i = 1; i < 5; i++) {
+  for (let i = 1; i <= totalPlayers; i++) {
     const checkPosition = whichColor + JSON.stringify(i);
     const gotiChanceColor = whichColor.charAt(0).toUpperCase();
     if (positionData[checkPosition].item[0] !== undefined) {

@@ -1,20 +1,15 @@
 import React, { FC } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import { positionDataSelector } from "./redux/selectors";
-import { AppState } from "./redux/reducer";
-import { playerWinAction } from "./redux/action/action";
 import { mapObject } from "./data";
+import { playerWinAction } from "./redux/slices";
+import { AppState } from "./redux/store";
 
-interface DummyCenterProps extends ReduxProps {
-  onClick: () => void;
-}
+interface DummyCenterProps extends ReduxProps {}
 
-const DummyCenter: FC<DummyCenterProps> = ({
-  onClick,
-  positionData,
-  playerWin,
-}) => {
+const DummyCenter: FC<DummyCenterProps> = ({ positionData, playerWin }) => {
   const winArray = [...positionData["win"].item];
+  const handleClick = () => console.log("win");
   let object: { [a: string]: number } = {
     B: 0,
     Y: 0,
@@ -33,7 +28,7 @@ const DummyCenter: FC<DummyCenterProps> = ({
   return (
     <div
       className="w-[120px] h-[120px] border border-transparent flex flex-wrap"
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="flex items-center justify-center flex-wrap">
         {winArray.map((item, index) => (

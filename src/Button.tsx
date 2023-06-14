@@ -13,16 +13,17 @@ import {
   gotiCutTokenSelector,
   gotiReachedWinSelector,
 } from "./redux/selectors";
-import { AppState } from "./redux/reducer";
+
 import { ConnectedProps, connect } from "react-redux";
 import {
   canPlayAction,
-  positionDataAction,
   gotiCutTokenAction,
-  gotiReachedWinAction,
+  gotiReachedWinTokenAction,
+  positionDataChangeAction,
   playedAction,
   positionDataFilterAction,
-} from "./redux/action/action";
+} from "./redux/slices";
+import { AppState } from "./redux/store";
 
 interface ButtonProps extends ReduxProps {
   index: number;
@@ -247,15 +248,16 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  positionDataChange: positionDataAction,
+  positionDataChange: positionDataChangeAction,
   playedChange: playedAction,
   canPlayChange: canPlayAction,
   gotiCutTokenChange: gotiCutTokenAction,
-  gotiReachedWinChange: gotiReachedWinAction,
+  gotiReachedWinChange: gotiReachedWinTokenAction,
   positionDataFilter: positionDataFilterAction,
 };
 
 export type setMainStateType = typeof mapDispatchToProps;
+export type mainStateType = ReturnType<typeof mapStateToProps>;
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

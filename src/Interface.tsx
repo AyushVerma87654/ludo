@@ -8,8 +8,6 @@ import DiceRolling from "./DiceRolling";
 interface InterfaceProps {}
 
 const Interface: FC<InterfaceProps> = ({}) => {
-  const handleClick = () => console.log("win");
-
   return (
     <div className="">
       <div className="flex">
@@ -19,7 +17,7 @@ const Interface: FC<InterfaceProps> = ({}) => {
       </div>
       <div className="flex">
         <Repeat name={hor} direction="left" />
-        <DummyCenter onClick={() => handleClick()} />
+        <DummyCenter />
         <Repeat name={hor} direction="right" />
       </div>
       <div className="flex">

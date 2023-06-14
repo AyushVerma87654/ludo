@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { AppState } from "./reducer";
+import { AppState } from "./store";
 
 export const mainStateSelector = (state: AppState) => state.mainState;
 
@@ -41,4 +41,9 @@ export const positionDataSelector = createSelector(
 export const gotiReachedWinSelector = createSelector(
   [mainStateSelector],
   (state) => state.gotiReachedWinToken
+);
+
+export const totalPlayersSelector = createSelector(
+  [mainStateSelector],
+  (state) => state.totalPlayers
 );
