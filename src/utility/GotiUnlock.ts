@@ -1,4 +1,4 @@
-import { positionDataType } from "../data";
+import { positionDataType } from "../models/MainState";
 import { pushPop } from "./PushPop";
 
 export const gotiUnlock = (

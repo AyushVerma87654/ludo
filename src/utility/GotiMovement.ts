@@ -1,5 +1,8 @@
-import { positionDataType } from "../data";
-import { gotiCutTokenType } from "../models/MainState";
+import {
+  gotiCutTokenType,
+  gotiReachedWinChangeType,
+  positionDataType,
+} from "../models/MainState";
 import { gotiMovementToForword } from "./GotiMovementToForword";
 import { gotiUnlock } from "./GotiUnlock";
 
@@ -9,7 +12,7 @@ export const gotiMovement = (
   positionData: positionDataType,
   diceNumber: number,
   gotiCutTokenChange: gotiCutTokenType,
-  gotiReachedWinChange: gotiCutTokenType
+  gotiReachedWinChange: gotiReachedWinChangeType
 ) => {
   if (
     diceNumber === 6 &&

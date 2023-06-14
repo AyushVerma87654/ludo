@@ -1,4 +1,4 @@
-import { positionDataType } from "../data";
+import { positionDataType } from "../models/MainState";
 
 export const canPlayFunction = (
   whichColor: string,

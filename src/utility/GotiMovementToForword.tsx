@@ -1,5 +1,9 @@
 import { mapObject } from "../data/index";
-import { gotiCutTokenType, positionDataType } from "../models/MainState";
+import {
+  gotiCutTokenType,
+  gotiReachedWinChangeType,
+  positionDataType,
+} from "../models/MainState";
 import { pushPop } from "./PushPop";
 
 export const gotiMovementToForword = (
@@ -8,7 +12,7 @@ export const gotiMovementToForword = (
   diceNumber: number,
   whichColor: string,
   gotiCutTokenChange: gotiCutTokenType,
-  gotiReachedWinChange: gotiCutTokenType
+  gotiReachedWinChange: gotiReachedWinChangeType
 ) => {
   let moveGoti = "";
   const chanceColor = whichColor.charAt(0).toUpperCase();
