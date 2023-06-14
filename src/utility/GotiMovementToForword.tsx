@@ -21,12 +21,12 @@ export const gotiMovementToForword = (
   if (gotiColor === chanceColor) {
     position = pushPop("", currentPosition, position, moveGoti);
     if (currentPosition.charAt(0) === "C") {
+      // this is checking of win line goti move
       position[currentPosition].item.map((item) => {
         if (chanceColor === item.charAt(0)) {
           moveGoti = item;
         }
       });
-      position = pushPop("", currentPosition, position, moveGoti);
       const newCurrentPosition = winLineGotiMove(currentPosition, diceNumber);
       if (newCurrentPosition === "win") {
         gotiReachedWinChange();
@@ -70,7 +70,9 @@ export const gotiMovementToForword = (
           if (position[newCurrentPositionString].item.length === 0) {
             position = pushPop(moveGoti, newCurrentPositionString, position);
           } else {
-            position[newCurrentPositionString].item.map((item) => {
+            const newArray = position[newCurrentPositionString].item;
+            for (let k = 0; k < newArray.length; k++) {
+              const item = newArray[k];
               if (
                 item.charAt(0).toUpperCase() ===
                 whichColor.charAt(0).toUpperCase()
@@ -80,6 +82,8 @@ export const gotiMovementToForword = (
                   newCurrentPositionString,
                   position
                 );
+                console.log("position", position);
+                return position;
               } else {
                 position = gotiCut(
                   position[newCurrentPositionString].item[0],
@@ -93,7 +97,7 @@ export const gotiMovementToForword = (
                   position
                 );
               }
-            });
+            }
           }
         }
       }
@@ -154,19 +158,6 @@ const gotiCut = (
       gotiCutTokenChange();
     }
   });
-  // if (gotiColor === "R") {
-  //   positionData = gotiCutSwap("red", positionData, goti);
-  //   gotiCutTokenChange();
-  // } else if (gotiColor === "G") {
-  //   positionData = gotiCutSwap("green", positionData, goti);
-  //   gotiCutTokenChange();
-  // } else if (gotiColor === "B") {
-  //   positionData = gotiCutSwap("blue", positionData, goti);
-  //   gotiCutTokenChange();
-  // } else if (gotiColor === "Y") {
-  //   positionData = gotiCutSwap("yellow", positionData, goti);
-  //   gotiCutTokenChange();
-  // }
   return positionData;
 };
 
