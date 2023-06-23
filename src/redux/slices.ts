@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { positionDataType, tempState } from "./../models/MainState";
-import { chanceOrder2, data2 } from "./../data/data2";
-import { chanceOrder3, data3 } from "./../data/data3";
+import { chanceOrder2A, chanceOrder2B, data2A, data2B } from "./../data/data2";
+import {
+  chanceOrder3A,
+  chanceOrder3B,
+  chanceOrder3C,
+  data3A,
+  data3B,
+  data3C,
+} from "./../data/data3";
 import { chanceOrder4, data4 } from "./../data/data4";
-import { handleClick } from "../utility/OnClickFunction";
-import { mainStateType, mapDispatchToProps, setMainStateType } from "../Button";
 
 export type mainState = {
   chance: number;
@@ -263,15 +268,20 @@ function shortCut(state: mainState) {
   state.played = false;
 }
 
-function setTotalPlayer(state: mainState, action: PayloadAction<number>) {
-  state.totalPlayers = action.payload;
+function setTotalPlayer(
+  state: mainState,
+  action: PayloadAction<{ totalPlayers: number; token: number }>
+) {
+  state.totalPlayers = action.payload.totalPlayers;
+  const token = action.payload.token;
   state.chance = -1;
   if (state.totalPlayers === 2) {
-    state.chanceOrder = chanceOrder2;
-    state.positionData = data2;
+    state.chanceOrder = token === 1 ? chanceOrder2A : chanceOrder2B;
+    state.positionData = token === 1 ? data2A : data2B;
   } else if (state.totalPlayers === 3) {
-    state.chanceOrder = chanceOrder3;
-    state.positionData = data3;
+    state.chanceOrder =
+      token === 1 ? chanceOrder3A : token === 2 ? chanceOrder3B : chanceOrder3C;
+    state.positionData = token === 1 ? data3A : token === 2 ? data3B : data3C;
   } else if (state.totalPlayers === 4) {
     state.chanceOrder = chanceOrder4;
     state.positionData = data4;
