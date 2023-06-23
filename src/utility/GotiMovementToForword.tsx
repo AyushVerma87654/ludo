@@ -14,6 +14,7 @@ export const gotiMovementToForword = (
   gotiCutTokenChange: gotiCutTokenType,
   gotiReachedWinChange: gotiReachedWinChangeType
 ) => {
+  console.log("gotiMovement called");
   let moveGoti = "";
   const chanceColor = whichColor.charAt(0).toUpperCase();
   position[currentPosition].item.map((item) => {
@@ -59,6 +60,7 @@ export const gotiMovementToForword = (
         newCurrentPositionString = JSON.stringify(
           swapPosition(gotiColor, newCurrentPosition)
         );
+        console.log("newCurrentPositionString", newCurrentPositionString);
         if (
           newCurrentPositionString === "0" ||
           newCurrentPositionString === "8" ||

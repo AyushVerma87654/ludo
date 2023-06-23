@@ -1,4 +1,7 @@
-import { ActionCreatorWithoutPayload } from "@reduxjs/toolkit";
+import {
+  ActionCreatorWithPayload,
+  ActionCreatorWithoutPayload,
+} from "@reduxjs/toolkit";
 
 export type gotiCutTokenType = ActionCreatorWithoutPayload<"main/gotiCutToken">;
 export type gotiReachedWinChangeType =
@@ -9,4 +12,17 @@ export type positionDataType = {
     position: string;
     item: string[];
   };
+};
+
+export type tempState = {
+  canPlay: boolean;
+  played: boolean;
+  chance: number;
+  chanceOrder: {
+    [a: number]: string;
+  };
+  diceNumber: number;
+  gotiCutToken: boolean;
+  gotiReachedWinToken: boolean;
+  autoPlayToken: boolean;
 };

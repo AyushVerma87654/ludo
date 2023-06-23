@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { mainStateType, setMainStateType } from "../Button";
 import { gotiMovement } from "./GotiMovement";
 
@@ -8,8 +9,16 @@ export const handleClick = (
 ) => {
   console.log("buttonId", buttonId);
 
-  const { chance, chanceOrder, positionData, diceNumber, played, canPlay } =
-    mainState;
+  const {
+    chance,
+    chanceOrder,
+    positionData,
+    diceNumber,
+    played,
+    canPlay,
+    autoPlayToken,
+  } = mainState;
+  console.log("setMainState", setMainState);
   const {
     canPlayChange,
     positionDataChange,
@@ -18,14 +27,16 @@ export const handleClick = (
     gotiReachedWinChange,
     positionDataFilter,
   } = setMainState;
-  if (canPlay && !played) {
+  let newPositionData = { ...positionData };
+  let token = true;
+  if ((canPlay || autoPlayToken) && !played) {
     let moveGoti = "";
     positionData[buttonId].item.map((item) => {
       if (item.charAt(0) === chanceOrder[chance].charAt(0).toUpperCase()) {
         moveGoti = item;
       }
     });
-    let newPositionData = gotiMovement(
+    newPositionData = gotiMovement(
       buttonId,
       chanceOrder[chance],
       positionData,
@@ -33,8 +44,6 @@ export const handleClick = (
       gotiCutTokenChange,
       gotiReachedWinChange
     );
-
-    let token: boolean = true;
 
     if (moveGoti !== "") {
       if (newPositionData[buttonId].item.length === 0) {

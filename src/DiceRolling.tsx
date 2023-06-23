@@ -7,16 +7,26 @@ import {
   canPlaySelector,
   positionDataSelector,
   totalPlayersSelector,
+  autoPlayTokenSelector,
+  autoPlayIndexSelector,
+  playedSelector,
+  gotiCutTokenSelector,
+  gotiReachedWinSelector,
 } from "./redux/selectors";
 import {
   canPlayAction,
   chanceAction,
   diceRollingAction,
+  gotiCutTokenAction,
+  gotiReachedWinTokenAction,
+  playedAction,
+  positionDataChangeAction,
   positionDataFilterAction,
   shortcutAction,
 } from "./redux/slices";
 import { ConnectedProps, connect } from "react-redux";
 import { AppState } from "./redux/store";
+import { handleClick } from "./utility/OnClickFunction";
 
 interface DiceRollingProps extends ReduxProps {}
 
@@ -31,13 +41,44 @@ const DiceRolling: FC<DiceRollingProps> = ({
   positionData,
   positionDataFilter,
   shortCut,
+  positionDataChange,
+  playedChange,
+  gotiCutTokenChange,
+  gotiReachedWinChange,
+  autoPlayToken,
+  autoPlayIndex,
+  played,
+  gotiCutToken,
+  gotiReachedWinToken,
 }) => {
+  const mainState = {
+    positionData,
+    chance,
+    chanceOrder,
+    diceNumber,
+    played,
+    canPlay,
+    gotiCutToken,
+    gotiReachedWinToken,
+    autoPlayToken,
+  };
+  const setMainState = {
+    positionDataChange,
+    playedChange,
+    canPlayChange,
+    gotiCutTokenChange,
+    gotiReachedWinChange,
+    positionDataFilter,
+  };
   const handleButtonClick = () => {
     chanceChange();
     diceNumberChange();
-    canPlayChange(null);
+    canPlayChange(positionData);
     positionDataFilter({ positionData, chanceColor: chanceOrder[chance] });
   };
+  if (autoPlayToken) {
+    handleClick(autoPlayIndex, mainState, setMainState);
+  }
 
   return (
     <div className="absolute left-0 top-0 p-12">
@@ -85,6 +126,11 @@ const mapStateToProps = (state: AppState) => ({
   canPlay: canPlaySelector(state),
   positionData: positionDataSelector(state),
   totalPlayers: totalPlayersSelector(state),
+  autoPlayToken: autoPlayTokenSelector(state),
+  autoPlayIndex: autoPlayIndexSelector(state),
+  played: playedSelector(state),
+  gotiCutToken: gotiCutTokenSelector(state),
+  gotiReachedWinToken: gotiReachedWinSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -93,6 +139,10 @@ const mapDispatchToProps = {
   canPlayChange: canPlayAction,
   positionDataFilter: positionDataFilterAction,
   shortCut: shortcutAction,
+  positionDataChange: positionDataChangeAction,
+  playedChange: playedAction,
+  gotiCutTokenChange: gotiCutTokenAction,
+  gotiReachedWinChange: gotiReachedWinTokenAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

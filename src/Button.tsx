@@ -12,6 +12,7 @@ import {
   canPlaySelector,
   gotiCutTokenSelector,
   gotiReachedWinSelector,
+  autoPlayTokenSelector,
 } from "./redux/selectors";
 
 import { ConnectedProps, connect } from "react-redux";
@@ -44,6 +45,7 @@ const Button: FC<ButtonProps> = ({
   chanceOrder,
   diceNumber,
   gotiCutToken,
+  autoPlayToken,
   gotiReachedWinToken,
   positionDataChange,
   playedChange,
@@ -61,6 +63,7 @@ const Button: FC<ButtonProps> = ({
     diceNumber,
     gotiCutToken,
     gotiReachedWinToken,
+    autoPlayToken,
   };
   const setMainState = {
     positionDataChange,
@@ -245,9 +248,10 @@ const mapStateToProps = (state: AppState) => ({
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
   gotiReachedWinToken: gotiReachedWinSelector(state),
+  autoPlayToken: autoPlayTokenSelector(state),
 });
 
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   positionDataChange: positionDataChangeAction,
   playedChange: playedAction,
   canPlayChange: canPlayAction,

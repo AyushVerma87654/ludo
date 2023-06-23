@@ -11,6 +11,7 @@ import {
   canPlaySelector,
   gotiCutTokenSelector,
   gotiReachedWinSelector,
+  autoPlayTokenSelector,
 } from "./redux/selectors";
 import {
   canPlayAction,
@@ -36,6 +37,7 @@ const RoundButton: FC<RoundButtonProps> = ({
   chance,
   chanceOrder,
   diceNumber,
+  autoPlayToken,
   gotiCutToken,
   gotiReachedWinToken,
   positionDataChange,
@@ -54,6 +56,7 @@ const RoundButton: FC<RoundButtonProps> = ({
     diceNumber,
     gotiCutToken,
     gotiReachedWinToken,
+    autoPlayToken,
   };
   let gotiBgColor = "";
   const setMainState = {
@@ -109,6 +112,7 @@ const mapStateToProps = (state: AppState) => ({
   canPlay: canPlaySelector(state),
   gotiCutToken: gotiCutTokenSelector(state),
   gotiReachedWinToken: gotiReachedWinSelector(state),
+  autoPlayToken: autoPlayTokenSelector(state),
 });
 
 const mapDispatchToProps = {

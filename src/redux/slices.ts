@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { canPlayFunction } from "./../utility/CanPlay";
-import { positionDataType } from "./../models/MainState";
+import { positionDataType, tempState } from "./../models/MainState";
 import { chanceOrder2, data2 } from "./../data/data2";
 import { chanceOrder3, data3 } from "./../data/data3";
 import { chanceOrder4, data4 } from "./../data/data4";
+import { handleClick } from "../utility/OnClickFunction";
+import { mainStateType, mapDispatchToProps, setMainStateType } from "../Button";
 
 export type mainState = {
   chance: number;
@@ -16,6 +17,9 @@ export type mainState = {
   gotiCutToken: boolean;
   gotiReachedWinToken: boolean;
   totalPlayers: number;
+  winArray: string[];
+  autoPlayToken: boolean;
+  autoPlayIndex: string;
 };
 
 const initialState: mainState = {
@@ -28,6 +32,9 @@ const initialState: mainState = {
   gotiCutToken: false,
   gotiReachedWinToken: false,
   totalPlayers: 0,
+  winArray: [],
+  autoPlayToken: false,
+  autoPlayIndex: "",
 };
 
 const stateSlice = createSlice({
@@ -74,7 +81,9 @@ function diceRolling(state: mainState) {
   state.diceNumber = newDiceNumber;
   state.gotiCutToken = false;
   state.gotiReachedWinToken = false;
+  state.autoPlayToken = false;
   state.played = false;
+  state.autoPlayIndex = "";
 }
 
 function chance(state: mainState) {
@@ -88,8 +97,12 @@ function chance(state: mainState) {
   else state.chance = state.chance + 1;
 }
 
-function canPlay(state: mainState, action: PayloadAction<boolean | null>) {
-  if (action.payload === null) {
+function canPlay(
+  state: mainState,
+  action: PayloadAction<boolean | positionDataType>
+) {
+  let newArray: { position: string; goti: string }[] = [];
+  if (typeof action.payload !== "boolean") {
     if (state.diceNumber == 6) {
       let counter = 0;
       const gotiChance = state.chanceOrder[state.chance]
@@ -114,18 +127,43 @@ function canPlay(state: mainState, action: PayloadAction<boolean | null>) {
       }
       if (counter === 4) {
         state.canPlay = false;
+      } else if (counter === 3) {
+        state.autoPlayToken = true;
       } else {
         state.canPlay = true;
       }
     } else {
-      console.log("diceNumber", state.diceNumber);
-      const token = canPlayFunction(
-        state.chanceOrder[state.chance],
-        state.positionData,
-        state.diceNumber
-      );
-      console.log("token", token);
-      state.canPlay = state.chance !== -1 && token;
+      let token = 0;
+      const gotiChanceColor = state.chanceOrder[state.chance]
+        .charAt(0)
+        .toUpperCase();
+      for (let j = 1; j < 6; j++) {
+        const newCheckPosition = "C" + gotiChanceColor + j;
+        if (state.positionData[newCheckPosition].item[0] !== undefined) {
+          if (j + state.diceNumber <= 6) {
+            token++;
+            newArray.push({
+              position: newCheckPosition,
+              goti: state.positionData[newCheckPosition].item[0],
+            });
+          }
+        }
+      }
+      for (let j = 0; j < 52; j++) {
+        for (let x = 0; x < state.positionData[j].item.length; x++) {
+          const item = state.positionData[j].item[x];
+          if (item.charAt(0) === gotiChanceColor) {
+            token++;
+            newArray.push({ position: JSON.stringify(j), goti: item });
+          }
+        }
+      }
+      if (token === 1) {
+        state.autoPlayToken = true;
+        state.autoPlayIndex = newArray[0].position;
+      } else if (token > 1) {
+        state.canPlay = true;
+      }
     }
   } else {
     state.canPlay = action.payload;
@@ -141,7 +179,10 @@ function positionDataChange(
 
 function played(state: mainState, action: PayloadAction<boolean>) {
   state.played = action.payload;
-  if (state.played) state.canPlay = false;
+  if (state.played) {
+    state.canPlay = false;
+    state.autoPlayToken = false;
+  }
 }
 
 function gotiCutToken(state: mainState) {
@@ -210,6 +251,7 @@ function playerWin(
   ) {
     state.totalPlayers = state.totalPlayers - 1;
     state.gotiReachedWinToken = false;
+    state.winArray = [...state.winArray, action.payload.color];
   }
   state.chanceOrder = newChanceOrder!;
 }

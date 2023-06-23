@@ -47,3 +47,18 @@ export const totalPlayersSelector = createSelector(
   [mainStateSelector],
   (state) => state.totalPlayers
 );
+
+export const winArraySelector = createSelector(
+  [mainStateSelector],
+  (state) => state.winArray
+);
+
+export const autoPlayTokenSelector = createSelector(
+  [mainStateSelector],
+  (state) => state.autoPlayToken
+);
+
+export const autoPlayIndexSelector = createSelector(
+  [mainStateSelector],
+  (state) => state.autoPlayIndex
+);

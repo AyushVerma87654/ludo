@@ -1,31 +1,30 @@
 import React from "react";
 import Interface from "./Interface";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import Test from "./Test";
+import { totalPlayersSelector } from "./redux/selectors";
 
 function App() {
+  const totalPlayers = useSelector(totalPlayersSelector);
+  console.log("totalPlayers", totalPlayers);
   return (
-    <Provider store={store}>
-      <div className="relative flex items-center justify-center text-blue-500 min-h-screen max-h-screen">
-        {/* <Interface /> */}
-        {/* <Test /> */}
-        {/* <HomePage /> */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
+    <div className="relative flex items-center justify-center text-blue-500 min-h-screen max-h-screen">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {totalPlayers > 0 ? (
           <Route path="/interface" element={<Interface />} />
-          <Route path="/test" element={<Test />} />
-        </Routes>
-      </div>
-    </Provider>
+        ) : (
+          <Route path="/interface" element={<HomePage />} />
+        )}
+        <Route path="/test" element={<Test />} />
+      </Routes>
+    </div>
   );
 }
 
 export default App;
 
-// add multi-player functionality
 // if only one goti is opened, move it automatically if anything except 6 comes.
 // if 2 or 3 goti of same color is placed below a goti of different color it can't move and if same number of goti are placed on it they all cut
-// Make a win array
