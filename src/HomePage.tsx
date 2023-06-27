@@ -11,7 +11,7 @@ const HomePage: FC<HomePageProps> = ({ setTotalPlayers }) => {
   const [toggle, setToggle] = React.useState(0);
   console.log("toggle", toggle);
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-12">
       <div className="text-7xl">Welcome to ludo website game</div>
       <div className="text-5xl py-4 my-4">Choose One of them</div>
       <div className="flex space-x-16 text-green-500 text-3xl mt-4">

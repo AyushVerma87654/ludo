@@ -9,7 +9,7 @@ interface InterfaceProps {}
 
 const Interface: FC<InterfaceProps> = ({}) => {
   return (
-    <div className="">
+    <div className="my-6">
       <div className="flex">
         <HomeBase color="red" />
         <Repeat name={ver} direction="up" />
